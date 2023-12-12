@@ -10,19 +10,19 @@ import {
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useEffect, useState } from "react";
-import { HeaderProductDetail } from "../components/product/HeaderProductDetail";
-import { ProductImage } from "../components/product/ProductImage";
-import { ItemEvaluate } from "../components/product/evaluation/ItemEvaluate";
-import { ButtonAction } from "../components/product/ButtonAction";
-import { Policy } from "../components/product/Policy";
-import { colors } from "../theme";
-import { addCart, updateCart } from "../redux/slices/CartsSlice";
+import { HeaderProductDetail } from "../../components/product/HeaderProductDetail";
+import { ProductImage } from "../../components/product/ProductImage";
+import { ItemEvaluate } from "../../components/product/evaluation/ItemEvaluate";
+import { ButtonAction } from "../../components/product/ButtonAction";
+import { Policy } from "../../components/product/Policy";
+import { colors } from "../../theme";
+import { addCart, updateCart } from "../../redux/slices/CartsSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useRoute } from "@react-navigation/native";
 import uuidv4 from "uuid/v4";
-import {addOrderProduct, removeAllOrderProduct} from "../redux/slices/OrderProductSlice";
+import {addOrderProduct, removeAllOrderProduct} from "../../redux/slices/OrderProductSlice";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { addHistory } from "../redux/slices/HistoryView";
+import { addHistory } from "../../redux/slices/HistoryView";
 export const ProducDetail = ({ navigation }) => {
   const fakeData = [
     {

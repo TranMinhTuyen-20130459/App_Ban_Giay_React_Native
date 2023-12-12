@@ -250,7 +250,6 @@ const styles = StyleSheet.create({
     height: 40,
     paddingHorizontal: 10,
   },
-
   detailButton: {
     backgroundColor: 'transparent',
     padding: 10,
@@ -260,7 +259,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#3498db',
   },
-
 });
 
 

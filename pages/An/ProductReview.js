@@ -6,7 +6,7 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
-import { colors } from "../theme";
+import { colors } from "../../theme";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 const ProductReview = () => {

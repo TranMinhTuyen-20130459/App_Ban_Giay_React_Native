@@ -5,42 +5,46 @@ import store from "./redux/store";
 import {NavigationContainer} from "@react-navigation/native";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import SettingScreen from "./pages/SettingScreen";
-import CartScreen from "./pages/CartScreen";
+import CartScreen from "./pages/Tuyen/CartScreen";
 import {colors} from "./theme";
 
-import {getCartFromAsyncStorage, getHistoryFromAsyncStorage, saveCartToAsyncStorage, saveHistoryViewToAsyncStorage} from "./utils/localStorage";
+import {
+    getCartFromAsyncStorage,
+    getHistoryFromAsyncStorage,
+    saveCartToAsyncStorage,
+    saveHistoryViewToAsyncStorage
+} from "./utils/localStorage";
 
 import {addCart} from "./redux/slices/CartsSlice";
-import OrderConfirmScreen from "./pages/Order/OrderConfirmScreen";
+import OrderConfirmScreen from "./pages/Tuyen/OrderConfirmScreen";
 import MainContainer from "./navigation/MainContainer";
-import OrderAddressScreen from "./pages/Order/OrderAddressScreen";
-import {ProducDetail} from "./pages/ProductDetail";
-import {SelectSize} from "./pages/SelectSize";
-import ProductReview from "./pages/ProductReview";
+import OrderAddressScreen from "./pages/Tuyen/OrderAddressScreen";
+import {ProducDetail} from "./pages/An/ProductDetail";
+import {SelectSize} from "./pages/An/SelectSize";
+import ProductReview from "./pages/An/ProductReview";
 import {getMethodPaymentFromAsyncStorage, setSelectedPayment} from "./redux/slices/PaymentSlice";
 import {
     getInfoAddressFromAsyncStorage,
     setAddress,
 } from "./redux/slices/OrderAddressSlice";
-import OrderDetailsScreen from './pages/orderUser/DetailOrder';
+import OrderDetailsScreen from './pages/Kien/DetailOrder';
 import Search from "./components/Search";
 import ResultSearch from "./components/ResultSearch";
-import HistorySell from "./pages/orderUser/history";
-import HistoryViewProduct from "./pages/HistoryViewProduct";
+import HistorySell from "./pages/Kien/history";
+import HistoryViewProduct from "./pages/Kien/HistoryViewProduct";
 import {AppState} from "react-native";
-
-import { addHistory } from "./redux/slices/HistoryView";
+import {addHistory} from "./redux/slices/HistoryView";
 
 function App() {
     const Stack = createNativeStackNavigator();
-   
-   
+
+
     useEffect(() => {
         const fetchData = async () => {
             try {
                 // Gọi hàm để lấy dữ liệu giỏ hàng từ AsyncStorage
                 const carts = await getCartFromAsyncStorage();
-                 // Gọi hàm để lấy dữ liệu sản phẩm đã xem từ AsyncStorage
+                // Gọi hàm để lấy dữ liệu sản phẩm đã xem từ AsyncStorage
                 const history = await getHistoryFromAsyncStorage();
 
 
@@ -51,11 +55,11 @@ function App() {
                     });
                 }
                 if (history) {
-                  history.forEach((item) => {
-                    store.dispatch(addHistory(item));
-                  });
+                    history.forEach((item) => {
+                        store.dispatch(addHistory(item));
+                    });
                 }
-        
+
                 // Gọi hàm để lấy dữ liệu địa chỉ từ AsyncStorage
                 const storedInfoAddress = await getInfoAddressFromAsyncStorage();
 
@@ -79,7 +83,7 @@ function App() {
                         saveCartToAsyncStorage(cartRedux);
                         const historyRedux = store.getState().historys;
                         // Lưu giỏ hàng xuống AsyncStorage
-                      
+
                         saveHistoryViewToAsyncStorage(historyRedux)
 
                     }
@@ -132,8 +136,6 @@ function App() {
                     />
 
 
-                   
-
                     <Stack.Screen
                         name="SelectSize"
                         component={SelectSize}
@@ -184,21 +186,21 @@ function App() {
                             headerTintColor: "white",
                         }}
                     />
-                      <Stack.Screen
+                    <Stack.Screen
                         name="Search"
                         component={Search}
                         options={{
-                            headerShown: false,                          
+                            headerShown: false,
                         }}
                     />
-                     <Stack.Screen
+                    <Stack.Screen
                         name="SearchResult"
                         component={ResultSearch}
                         options={{
-                            headerShown: false,                          
+                            headerShown: false,
                         }}
                     />
-                     <Stack.Screen name="HistoryViewProduct" component={HistoryViewProduct}
+                    <Stack.Screen name="HistoryViewProduct" component={HistoryViewProduct}
                                   options={{
                                       title: 'Sản phẩm đã xem',
                                       headerTitleAlign: 'center',
@@ -207,7 +209,7 @@ function App() {
                                       },
                                       headerTintColor: 'white',
                                   }}/>
-                                   <Stack.Screen name="HistorySell" component={HistorySell}
+                    <Stack.Screen name="HistorySell" component={HistorySell}
                                   options={{
                                       title: 'Lịch sử mua hàng ',
                                       headerTitleAlign: 'center',
@@ -216,7 +218,7 @@ function App() {
                                       },
                                       headerTintColor: 'white',
                                   }}/>
-                                   <Stack.Screen name="OrderDetail" component={OrderDetailsScreen}
+                    <Stack.Screen name="OrderDetail" component={OrderDetailsScreen}
                                   options={{
                                       title: 'Chi tiết đơn hàng',
                                       headerTitleAlign: 'center',

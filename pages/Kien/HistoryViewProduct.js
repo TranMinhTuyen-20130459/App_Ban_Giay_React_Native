@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 
 import { View, Text, FlatList, Image, ScrollView, ProgressBarAndroid, TouchableOpacity, StyleSheet, } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { colors } from '../theme';
+import { colors } from '../../theme';
 import { Dimensions } from 'react-native';
 import { Button } from 'react-native';
 
