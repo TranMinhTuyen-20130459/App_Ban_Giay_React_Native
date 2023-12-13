@@ -1,11 +1,12 @@
 import {Dimensions, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import React from "react";
 import {useNavigation} from "@react-navigation/native";
+import {formatMoney} from "../../utils/Utils";
 
 
-const SuggestedProduct = ({data}) =>{
+const SuggestedProduct = ({data}) => {
     const navigation = useNavigation();
-    return(
+    return (
         <View style={styles.container}>
             <View style={styles.widgetHeader}>
                 <View style={styles.widgetHeaderTitle}>
@@ -17,7 +18,7 @@ const SuggestedProduct = ({data}) =>{
             <View style={styles.listProduct}>
                 {data && data.map((item) => (
                     <TouchableOpacity style={styles.productItem}
-                                      key = {item.id_product}
+                                      key={item.id_product}
                                       onPress={() =>
                                           navigation.navigate("ProductDetail", {
                                               productId: item.id_product,
@@ -34,7 +35,7 @@ const SuggestedProduct = ({data}) =>{
                                   style={styles.titleProduct}>{item.name_product}</Text>
                         </View>
                         <View style={styles.priceProductWrap}>
-                            <Text style={styles.priceProduct}>{item.listed_price}</Text>
+                            <Text style={styles.priceProduct}>{formatMoney(item.listed_price)}</Text>
                         </View>
                     </TouchableOpacity>
                 ))}
@@ -42,8 +43,8 @@ const SuggestedProduct = ({data}) =>{
         </View>
     )
 }
-const { width } = Dimensions.get('window');
-const { height } = Dimensions.get('window');
+const {width} = Dimensions.get('window');
+const {height} = Dimensions.get('window');
 const styles = StyleSheet.create({
     container: {
         paddingVertical: 12, // tương đương với padding-block trong CSS
@@ -68,14 +69,14 @@ const styles = StyleSheet.create({
         color: '#27272a', // Màu tương ứng với rgb(39, 39, 42)
     },
     //-------------------------------------------------------------------
-    listProduct:{
-        display:"flex",
+    listProduct: {
+        display: "flex",
         flexWrap: "wrap",
         flexDirection: 'row',
         paddingHorizontal: 16,
         gap: 16,
     },
-    productItem:{
+    productItem: {
         display: "flex",
         // justifyContent: "center",
         width: (width - 32 - 16) * 0.5,
@@ -86,24 +87,24 @@ const styles = StyleSheet.create({
         borderColor: 'rgb(235, 235, 240)', // border: 1px solid rgb(235, 235, 240);
         borderRadius: 8, // border-radius: 8px;
     },
-    imageProductWrap:{
-        display:"flex",
+    imageProductWrap: {
+        display: "flex",
         justifyContent: "center",
         alignItems: "center",
         width: "100%",
         height: "70%",
     },
-    imageProduct:{
+    imageProduct: {
         width: "100%",
         height: "100%",
         opacity: 1
     },
-    titleProductWrap:{
+    titleProductWrap: {
         display: 'flex', // -webkit-box;
         paddingHorizontal: 8,
         width: "100%"
     },
-    titleProduct:{
+    titleProduct: {
         flexDirection: 'column', // -webkit-box-orient: vertical;
         overflow: 'hidden', // overflow: hidden;
         fontSize: 12, // font-size: 12px;
@@ -111,11 +112,11 @@ const styles = StyleSheet.create({
         color: 'rgb(39, 39, 42)', // color: rgb(39, 39, 42);
         margin: 0, // margin: 0px;
     },
-    priceProductWrap:{
+    priceProductWrap: {
         paddingHorizontal: 8,
         paddingBottom: 8
     },
-    priceProduct:{
+    priceProduct: {
         margin: 0, // margin: 0px;
         display: 'flex', // display: flex;
         textAlign: 'left', // text-align: left;

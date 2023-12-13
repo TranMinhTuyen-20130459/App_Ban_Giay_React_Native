@@ -25,7 +25,7 @@ function HomeScreen() {
                     <View style={styles.mainFormat}>
                         <BannerGrid></BannerGrid>
                         <ElementProduct title={"Sản phẩm bán chạy"} type={"ds-giay-hot"}></ElementProduct>
-                        <ElementProduct title={"Sản phẩm mói"} type={"ds-giay-moi"}></ElementProduct>
+                        <ElementProduct title={"Sản phẩm mới"} type={"ds-giay-moi"}></ElementProduct>
                         <ElementProduct title={"Sản phẩm khuyến mãi"} type={"ds-giay-khuyen_mai"}></ElementProduct>
                         <SuggestedProduct data={data}></SuggestedProduct>
                     </View>

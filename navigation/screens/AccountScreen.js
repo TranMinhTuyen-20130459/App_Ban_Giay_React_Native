@@ -38,9 +38,6 @@ function AccountScreen() {
           colorQuantity='#000'
         />
       </View>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-      >
         <View style={styles.upperHeaderPlaceholder} />
         <View style={styles.scrollViewContent}>
           <View style={styles.containerAccount}>
@@ -55,7 +52,7 @@ function AccountScreen() {
               </TouchableOpacity>
               <View style={styles.containerName}>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Text style={{ fontSize: 18, fontWeight: 600 }}>Muleup Nguyen</Text>
+                  <Text style={{ fontSize: 18, fontWeight: 600 }}>Tuyên Kun</Text>
                   <Ionicons style={{ marginLeft: 4, paddingTop: 3 }} name="chevron-forward-outline" size={18} color="#000" />
                 </View>
                 <TouchableOpacity
@@ -205,7 +202,6 @@ function AccountScreen() {
             </TouchableOpacity>
           </View>
         </View>
-      </ScrollView>
     </View>
   );
 }

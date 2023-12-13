@@ -2,16 +2,18 @@ import {Image, ScrollView, StyleSheet, Text, TouchableOpacity, View} from "react
 import {useState} from "react";
 import {useNavigation} from "@react-navigation/native";
 import {useFetchData} from "../../utils/LoadData";
+import {formatMoney} from "../../utils/Utils";
+
 export default function ElementProduct({title, type}) {
-    const { data, handleScroll } = useFetchData(type);
+    const {data, handleScroll} = useFetchData(type);
     const navigation = useNavigation();
     const [activeButton, setActiveButton] = useState(1);
     const buttons = [
-        { id: 1, label: "Button 1" },
-        { id: 2, label: "Button 2" },
-        { id: 3, label: "Button 3" },
-        { id: 4, label: "Button 4" },
-        { id: 5, label: "Button 5" },
+        {id: 1, label: "Button 1"},
+        {id: 2, label: "Button 2"},
+        {id: 3, label: "Button 3"},
+        {id: 4, label: "Button 4"},
+        {id: 5, label: "Button 5"},
     ];
     const handlePress = (buttonId) => {
         setActiveButton(buttonId);
@@ -25,31 +27,31 @@ export default function ElementProduct({title, type}) {
                     </View>
                 </View>
             </View>
-            <ScrollView horizontal showsHorizontalScrollIndicator={true}>
-                <View style={styles.productTabContainer}>
-                    {buttons.map((button) => (
-                        <TouchableOpacity
-                            key={button.id}
-                            style={[
-                                styles.productTab,
-                                activeButton === button.id ? styles.activeProductTab : null,
-                            ]}
-                            onPress={() => handlePress(button.id)}
-                        >
-                            <Text
-                                style={[
-                                    styles.productTabText,
-                                    activeButton === button.id
-                                        ? styles.activeProductTabText
-                                        : null,
-                                ]}
-                            >
-                                {button.label}
-                            </Text>
-                        </TouchableOpacity>
-                    ))}
-                </View>
-            </ScrollView>
+            {/*<ScrollView horizontal showsHorizontalScrollIndicator={true}>*/}
+            {/*    <View style={styles.productTabContainer}>*/}
+            {/*        {buttons.map((button) => (*/}
+            {/*            <TouchableOpacity*/}
+            {/*                key={button.id}*/}
+            {/*                style={[*/}
+            {/*                    styles.productTab,*/}
+            {/*                    activeButton === button.id ? styles.activeProductTab : null,*/}
+            {/*                ]}*/}
+            {/*                onPress={() => handlePress(button.id)}*/}
+            {/*            >*/}
+            {/*                <Text*/}
+            {/*                    style={[*/}
+            {/*                        styles.productTabText,*/}
+            {/*                        activeButton === button.id*/}
+            {/*                            ? styles.activeProductTabText*/}
+            {/*                            : null,*/}
+            {/*                    ]}*/}
+            {/*                >*/}
+            {/*                    {button.label}*/}
+            {/*                </Text>*/}
+            {/*            </TouchableOpacity>*/}
+            {/*        ))}*/}
+            {/*    </View>*/}
+            {/*</ScrollView>*/}
             <ScrollView
                 horizontal
                 showsHorizontalScrollIndicator={true}
@@ -69,7 +71,7 @@ export default function ElementProduct({title, type}) {
                         >
                             <View style={styles.imageProductWrap}>
                                 <Image
-                                    source={{ uri: `${item.list_image[0].path_image}` }}
+                                    source={{uri: `${item.list_image[0].path_image}`}}
                                     style={styles.imageProduct}
                                 />
                             </View>
@@ -83,7 +85,7 @@ export default function ElementProduct({title, type}) {
                                 </Text>
                             </View>
                             <View style={styles.priceProductWrap}>
-                                <Text style={styles.priceProduct}>{item.listed_price}</Text>
+                                <Text style={styles.priceProduct}>{formatMoney(item.listed_price)}</Text>
                             </View>
                         </TouchableOpacity>
                     ))}
@@ -169,14 +171,14 @@ const styles = StyleSheet.create({
         color: 'rgb(10, 104, 255)',// color: rgb(10, 104, 255);
     },
     //-------------------------------------------------------------------
-    listProduct:{
-        display:"flex",
+    listProduct: {
+        display: "flex",
         flexDirection: "row",
         justifyContent: "center",
         paddingHorizontal: 16,
         gap: 16,
     },
-    productItem:{
+    productItem: {
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
@@ -187,24 +189,24 @@ const styles = StyleSheet.create({
         borderColor: 'rgb(235, 235, 240)', // border: 1px solid rgb(235, 235, 240);
         borderRadius: 8, // border-radius: 8px;
     },
-    imageProductWrap:{
-        display:"flex",
+    imageProductWrap: {
+        display: "flex",
         justifyContent: "center",
         alignItems: "center",
         width: "100%",
         height: 136,
     },
-    imageProduct:{
+    imageProduct: {
         width: "100%",
         height: "100%",
         opacity: 1
     },
-    titleProductWrap:{
+    titleProductWrap: {
         display: 'flex', // -webkit-box;
         paddingHorizontal: 8,
         width: "100%"
     },
-    titleProduct:{
+    titleProduct: {
         flexDirection: 'column', // -webkit-box-orient: vertical;
         overflow: 'hidden', // overflow: hidden;
         fontSize: 12, // font-size: 12px;
@@ -212,11 +214,11 @@ const styles = StyleSheet.create({
         color: 'rgb(39, 39, 42)', // color: rgb(39, 39, 42);
         margin: 0, // margin: 0px;
     },
-    priceProductWrap:{
+    priceProductWrap: {
         paddingHorizontal: 8,
         paddingBottom: 8
     },
-    priceProduct:{
+    priceProduct: {
         margin: 0, // margin: 0px;
         display: 'flex', // display: flex;
         textAlign: 'left', // text-align: left;
