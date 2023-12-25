@@ -21,10 +21,10 @@ const HistoryViewProduct = () => {
         <View style={styles.container}>
           <ScrollView>
             <View style={styles.listProduct}>
-                    {history.map((item) => (
+                    {history.map((item,index) => (
                             <TouchableOpacity
                             style={styles.productItem}
-                            key={item.id}
+                            key={index}
                             onPress={() =>
                                 navigation.navigate("ProductDetail", {
                                 productId: item.id,

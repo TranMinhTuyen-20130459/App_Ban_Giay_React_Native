@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { View, Text, Image, ScrollView,ProgressBarAndroid, TouchableOpacity, StyleSheet } from 'react-native';
 import { ProgressBar } from 'react-native-progress';
-import { API_GET_PATHS } from '../../services/PathApi';
+import { API_GET_PATHS } from '../../common/PathApi';
 
 const OrderDetailsScreen = ({ route }) => {
   const id = route.params?.id ;

@@ -2,13 +2,13 @@ import { View, Text, TouchableOpacity, StatusBar, StyleSheet, Modal } from 'reac
 import React, { useEffect, useState } from 'react'
 import { useIsFocused, useNavigation } from '@react-navigation/native'
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { WINDOW_WIDTH, formatMoney } from '../../utils/Utils';
+import { WINDOW_WIDTH, formatMoney } from '../../../../utils/Utils';
 import CheckBox from 'react-native-check-box';
-import { colors } from '../../theme';
-import CartItemsList from '../../components/CartItemsList';
+import { colors } from '../../../../theme';
+import CartItemsList from '../../../../components/CartItemsList';
 import { useDispatch, useSelector } from 'react-redux';
-import { addCart, removeAllCart, removeCart } from '../../redux/slices/CartsSlice';
-import {addOrderProduct, removeAllOrderProduct} from '../../redux/slices/OrderProductSlice';
+import { addCart, removeAllCart, removeCart } from '../../../../redux/slices/CartsSlice';
+import {addOrderProduct, removeAllOrderProduct} from '../../../../redux/slices/OrderProductSlice';
 
 export default function CartScreen() {
     const navigation = useNavigation();

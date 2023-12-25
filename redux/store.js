@@ -14,7 +14,6 @@ const store = configureStore({
         category: CategoryReducer,
         payment: paymentReducer,
         orderProducts: orderProductReducer,
-        historys: HistoryView,
     }
 })
 

@@ -3,12 +3,11 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 // Screens
-import HomeScreen from './screens/HomeScreen';
-import CategoryScreen from './screens/CategoryScreen';
-import MessageScreen from './screens/MessageScreen';
-import AccountScreen from './screens/AccountScreen';
+import HomeScreen from './Tham/HomeScreen';
+import CategoryScreen from './Tham/CategoryScreen';
+import MessageScreen from './Tuyen/screens/Orther/MessageScreen';
+import AccountScreen from './Tuyen/screens/Orther/AccountScreen';
 
-//Screen names
 const homeName = "Trang chủ";
 const categoryName = "Danh mục";
 const messageName = "Tin mới";

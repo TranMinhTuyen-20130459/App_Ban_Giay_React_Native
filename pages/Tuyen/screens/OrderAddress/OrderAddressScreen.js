@@ -11,9 +11,9 @@ import DropDownPicker from "react-native-dropdown-picker";
 import { styles } from "./OrderAddress.styles";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { setAddress } from "../../redux/slices/OrderAddressSlice";
-import { colors } from "../../theme";
-import { getLabelFromValue } from "./util/Utils";
+import { setAddress } from "../../../../redux/slices/OrderAddressSlice";
+import { colors } from "../../../../theme";
+import { getLabelFromValue } from "../../util/Utils";
 import { useNavigation } from "@react-navigation/native";
 import {
   returnValueErrorOfNameCustomer,
@@ -22,8 +22,8 @@ import {
   returnValueErrorProvince,
   returnValueErrorDistrict,
   returnValueErrorWard,
-} from "./util/CheckValid";
-import { fetchDataMethodGET } from "./util/CallApi";
+} from "../../util/CheckValid";
+import { fetchDataMethodGET } from "../../util/CallApi";
 
 export default function OrderAddressScreen() {
   const dispatch = useDispatch();

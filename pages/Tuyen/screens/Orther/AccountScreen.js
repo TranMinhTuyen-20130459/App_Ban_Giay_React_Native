@@ -3,9 +3,9 @@ import { useIsFocused, useNavigation } from '@react-navigation/native';
 import React, { useEffect } from 'react'; // Import useEffect từ react thay vì componentWillUnmount
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { colors } from '../../theme';
-import { WINDOW_HEIGHT } from '../../utils/Utils';
-import CartIcon from '../../components/CartIcon';
+import { colors } from '../../../../theme';
+import { WINDOW_HEIGHT } from '../../../../utils/Utils';
+import CartIcon from '../../../../components/CartIcon';
 
 function AccountScreen() {
   const navigation = useNavigation();

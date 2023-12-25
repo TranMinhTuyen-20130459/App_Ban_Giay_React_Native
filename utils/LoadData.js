@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import {useState, useEffect} from "react";
+import {BASE_URL} from "../common/PathApi";
 
 export const useFetchData = (type) => {
     const [data, setData] = useState([]);
@@ -8,9 +9,9 @@ export const useFetchData = (type) => {
     const fetchData = async () => {
         try {
             setLoading(true);
-            const response = await fetch("http://tmt020202ccna-001-site1.atempurl.com/api/product-shoes/"+`${type}`+"?page=" +
-                        `${page}` +
-                        "&pageSize=3");
+            const response = await fetch(BASE_URL + "/api/product-shoes/" + `${type}` + "?page=" +
+                `${page}` +
+                "&pageSize=3");
             const newData = await response.json();
             setData((prevData) => [...prevData, ...newData.data]);
             setPage((prevPage) => prevPage + 1);
@@ -21,8 +22,8 @@ export const useFetchData = (type) => {
         }
     };
 
-    const handleScroll = ({ nativeEvent }) => {
-        const { layoutMeasurement, contentOffset, contentSize } = nativeEvent;
+    const handleScroll = ({nativeEvent}) => {
+        const {layoutMeasurement, contentOffset, contentSize} = nativeEvent;
         const isCloseToBottom =
             layoutMeasurement.width + contentOffset.x >= contentSize.width - 20;
 
@@ -35,7 +36,7 @@ export const useFetchData = (type) => {
         fetchData();
     }, []); // Fetch data when component mounts
 
-    return { data, handleScroll };
+    return {data, handleScroll};
 };
 
 export const useFetchDataSuggested = () => {
@@ -46,7 +47,7 @@ export const useFetchDataSuggested = () => {
     const fetchData = async () => {
         try {
             setLoading(true);
-            const response = await fetch("http://tmt020202ccna-001-site1.atempurl.com/api/product-shoes/ds-giay-moi?page=" +
+            const response = await fetch(BASE_URL + "/api/product-shoes/ds-giay-moi?page=" +
                 `${page}` +
                 "&pageSize=6");
             const newData = await response.json();
@@ -59,8 +60,8 @@ export const useFetchDataSuggested = () => {
         }
     };
 
-    const handleScroll = ({ nativeEvent }) => {
-        const { layoutMeasurement, contentOffset, contentSize } = nativeEvent;
+    const handleScroll = ({nativeEvent}) => {
+        const {layoutMeasurement, contentOffset, contentSize} = nativeEvent;
         const isCloseToBottom =
             layoutMeasurement.height + contentOffset.y >= contentSize.height - 5;
 
@@ -73,5 +74,5 @@ export const useFetchDataSuggested = () => {
         fetchData();
     }, []); // Fetch data when component mounts
 
-    return { data, handleScroll };
+    return {data, handleScroll};
 };

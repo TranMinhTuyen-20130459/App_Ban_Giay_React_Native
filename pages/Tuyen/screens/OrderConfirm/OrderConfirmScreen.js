@@ -2,16 +2,16 @@ import {styles} from "./OrderConfirm.styles";
 import {Alert, Image, ScrollView, Text, TouchableOpacity, View} from "react-native";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import React from "react";
-import {colors} from "../../theme";
-import {formatMoney, WINDOW_WIDTH} from "../../utils/Utils";
+import {colors} from "../../../../theme";
+import {formatMoney, WINDOW_WIDTH} from "../../../../utils/Utils";
 import {useNavigation} from "@react-navigation/native";
 import {useDispatch, useSelector} from "react-redux";
-import {method_payments, setSelectedPayment} from "../../redux/slices/PaymentSlice";
-import {createOrder} from "./util/CallApi";
-import {API_POST_PATHS} from "../../services/PathApi";
-import {removeCart} from "../../redux/slices/CartsSlice";
-import {removeAllOrderProduct} from "../../redux/slices/OrderProductSlice";
-import {isValidOrder} from "./util/CheckValid";
+import {method_payments, setSelectedPayment} from "../../../../redux/slices/PaymentSlice";
+import {createOrder} from "../../util/CallApi";
+import {API_POST_PATHS} from "../../../../common/PathApi";
+import {removeCart} from "../../../../redux/slices/CartsSlice";
+import {removeAllOrderProduct} from "../../../../redux/slices/OrderProductSlice";
+import {isValidOrder} from "../../util/CheckValid";
 
 export default function OrderConfirmScreen() {
 
@@ -258,7 +258,7 @@ function CashPaymentComponent({selectedPayment, handlePaymentClick}) {
                 style={{opacity: selectedPayment === method_payments.CASH ? 1 : 0}}
             >
             </Ionicons>
-            <Image source={require('./images/money.png')} style={styles.img}></Image>
+            <Image source={require('../../images/money.png')} style={styles.img}></Image>
             <Text style={styles.nameMethodPayment}>Thanh toán tiền mặt</Text>
         </TouchableOpacity>
     )
@@ -278,7 +278,7 @@ function ZaloPayComponent({selectedPayment, handlePaymentClick}) {
                 style={{opacity: selectedPayment === method_payments.ZaloPay ? 1 : 0}}
             >
             </Ionicons>
-            <Image source={require('./images/ZaloPay.png')} style={styles.img}></Image>
+            <Image source={require('../../images/ZaloPay.png')} style={styles.img}></Image>
             <Text style={styles.nameMethodPayment}>Ví ZaloPay</Text>
         </TouchableOpacity>
     )

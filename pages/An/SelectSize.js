@@ -92,29 +92,6 @@ export const SelectSize = (prop) => {
                         padding: 8,
                     }}
                 >
-                    {/*<Image*/}
-                    {/*    style={{ flex: 1 }}*/}
-                    {/*    source={{*/}
-                    {/*        uri: productData.list_image[0].path_image,*/}
-                    {/*    }}*/}
-                    {/*></Image>*/}
-                    {/*<View*/}
-                    {/*    style={{*/}
-                    {/*        flex: 2,*/}
-                    {/*        padding: 5,*/}
-                    {/*    }}*/}
-                    {/*>*/}
-                    {/*    <View>*/}
-                    {/*        <Text numberOfLines={2}>*/}
-                    {/*            {""}*/}
-                    {/*            Đây là sản phẩm giày được yêu thích nhất năm 2023. Với đa dạng kích cỡ và màu sắc. Phù hợp với giới trẻ năng động trẻ trung*/}
-                    {/*        </Text>*/}
-                    {/*        <Text>*/}
-                    {/*            Size:{size ? size : productData.list_size[0].name_size}*/}
-                    {/*        </Text>*/}
-                    {/*        <Text>Màu: {color ? color : productData.list_image[0].name}</Text>*/}
-                    {/*    </View>*/}
-                    {/*</View>*/}
                 </View>
                 <View
                     style={{
@@ -125,10 +102,10 @@ export const SelectSize = (prop) => {
                         <Text>Màu: </Text>
                         <View style={styles.flexWrap}>
                             {productData.list_image
-                                ? productData.list_image.map((image) => {
+                                ? productData.list_image.map((image, index) => {
                                     return (<>
                                             <ItemColorClothes
-                                                key={image.id_image}
+                                                key={index}
                                                 color={image.name}
                                                 link={image.path_image}
                                                 selected={color === image.name}

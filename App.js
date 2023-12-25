@@ -4,8 +4,8 @@ import {Provider} from "react-redux";
 import store from "./redux/store";
 import {NavigationContainer} from "@react-navigation/native";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
-import SettingScreen from "./pages/SettingScreen";
-import CartScreen from "./pages/Tuyen/CartScreen";
+import SettingScreen from "./pages/Tuyen/screens/Orther/SettingScreen";
+import CartScreen from "./pages/Tuyen/screens/Cart/CartScreen";
 import {colors} from "./theme";
 
 import {
@@ -13,12 +13,12 @@ import {
     getHistoryFromAsyncStorage,
     saveCartToAsyncStorage,
     saveHistoryViewToAsyncStorage
-} from "./utils/localStorage";
+} from "./utils/LocalStorage";
 
 import {addCart} from "./redux/slices/CartsSlice";
-import OrderConfirmScreen from "./pages/Tuyen/OrderConfirmScreen";
-import MainContainer from "./navigation/MainContainer";
-import OrderAddressScreen from "./pages/Tuyen/OrderAddressScreen";
+import OrderConfirmScreen from "./pages/Tuyen/screens/OrderConfirm/OrderConfirmScreen";
+import MainContainer from "./pages/MainContainer";
+import OrderAddressScreen from "./pages/Tuyen/screens/OrderAddress/OrderAddressScreen";
 import {ProducDetail} from "./pages/An/ProductDetail";
 import {SelectSize} from "./pages/An/SelectSize";
 import ProductReview from "./pages/An/ProductReview";

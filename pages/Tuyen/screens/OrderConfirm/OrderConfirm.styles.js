@@ -1,6 +1,6 @@
 import {StyleSheet} from 'react-native'
-import {colors} from "../../theme";
-import {WINDOW_WIDTH} from "../../utils/Utils";
+import {colors} from "../../../../theme";
+import {WINDOW_WIDTH} from "../../../../utils/Utils";
 
 export const styles = StyleSheet.create({
         container: {

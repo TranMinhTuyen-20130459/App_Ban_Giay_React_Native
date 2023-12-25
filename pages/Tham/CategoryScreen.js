@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import CartIcon from '../../components/CartIcon';
 import { categorySelector, selectCategory } from '../../redux/slices/CategorySlice';
 import {useNavigation} from "@react-navigation/native";
-import {API_GET_PATHS} from '../../services/PathApi';
+import {API_GET_PATHS} from '../../common/PathApi';
 import {formatMoney} from '../../utils/Utils';
 import VoteScreen from '../../components/VoteScreen';
 import { colors } from '../../theme';
@@ -304,10 +304,6 @@ const styles = StyleSheet.create({
   titleCategory: {
     fontSize: 20,
     fontWeight: 'bold',
-  },
-  iconFilter: {
-    fontSize: 20,
-    color: "blue",
   },
   titleContainer: {
     flexDirection: 'row',
