@@ -1,7 +1,7 @@
 import {styles} from "./OrderConfirm.styles";
 import {Alert, Image, ScrollView, Text, TouchableOpacity, View} from "react-native";
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import React from "react";
+import React, {useState} from "react";
 import {colors} from "../../../../theme";
 import {formatMoney, WINDOW_WIDTH} from "../../../../utils/Utils";
 import {useNavigation} from "@react-navigation/native";
@@ -12,8 +12,15 @@ import {API_POST_PATHS} from "../../../../common/PathApi";
 import {removeCart} from "../../../../redux/slices/CartsSlice";
 import {removeAllOrderProduct} from "../../../../redux/slices/OrderProductSlice";
 import {isValidOrder} from "../../util/CheckValid";
+import {PayPalWebView} from "./PayPalScreen";
 
 export default function OrderConfirmScreen() {
+
+    const [showPayPalGateway, setShowPayPalGateway] = useState(false);
+
+    const SetShowPayPalGateway = (value) => {
+        setShowPayPalGateway(value);
+    }
 
     const dispatch = useDispatch()
     const navigation = useNavigation()
@@ -52,7 +59,6 @@ export default function OrderConfirmScreen() {
             price: item.price
         }))
     }
-
 
     const handleClickBtOrder = async () => {
 
@@ -93,6 +99,11 @@ export default function OrderConfirmScreen() {
             Alert.alert('', 'Chức năng này đang được phát triển')
         }
 
+        //TH: Thanh toán bằng Paypal
+        else if (selectedPayment.toString() === method_payments.PayPal) {
+            setShowPayPalGateway(true);
+        }
+
     }
 
     return (
@@ -104,10 +115,12 @@ export default function OrderConfirmScreen() {
                     <PaymentsComponent selectedPayment={selectedPayment}></PaymentsComponent>
                     <OrderValueComponent order_value={value_order()}
                                          ship_price={ship_price}
-                                         total_price={total_price}
-                    >
+                                         total_price={total_price}>
                     </OrderValueComponent>
                 </View>
+                {showPayPalGateway ? (
+                    <PayPalWebView showGateway={showPayPalGateway} setShowGateway={SetShowPayPalGateway}/>
+                ) : null}
             </ScrollView>
             <FooterComponent handleClickBtOrder={handleClickBtOrder} total_price={total_price}></FooterComponent>
         </View>
@@ -230,13 +243,15 @@ function PaymentsComponent({selectedPayment}) {
     return (
         <View style={styles.payments}>
             <Text style={{fontSize: 16}}>Phương thức thanh toán</Text>
-
             <CashPaymentComponent
                 selectedPayment={selectedPayment}
                 handlePaymentClick={handlePaymentClick}
             />
-
             <ZaloPayComponent
+                selectedPayment={selectedPayment}
+                handlePaymentClick={handlePaymentClick}
+            />
+            <PayPalComponent
                 selectedPayment={selectedPayment}
                 handlePaymentClick={handlePaymentClick}
             />
@@ -260,6 +275,26 @@ function CashPaymentComponent({selectedPayment, handlePaymentClick}) {
             </Ionicons>
             <Image source={require('../../images/money.png')} style={styles.img}></Image>
             <Text style={styles.nameMethodPayment}>Thanh toán tiền mặt</Text>
+        </TouchableOpacity>
+    )
+}
+
+function PayPalComponent({selectedPayment, handlePaymentClick}) {
+
+    return (
+        <TouchableOpacity
+            style={[styles.methodPayment,
+                selectedPayment === method_payments.PayPal && {backgroundColor: 'rgba(5, 0, 245, 0.1)'}]}
+            onPress={() => handlePaymentClick(method_payments.PayPal)}>
+            <Ionicons
+                name="stop-circle-outline"
+                size={30}
+                color='#0a74e4'
+                style={{opacity: selectedPayment === method_payments.PayPal ? 1 : 0}}
+            >
+            </Ionicons>
+            <Image source={require('../../images/paypal.png')} style={styles.img}></Image>
+            <Text style={styles.nameMethodPayment}>PayPal</Text>
         </TouchableOpacity>
     )
 }
