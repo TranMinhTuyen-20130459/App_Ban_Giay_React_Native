@@ -1,14 +1,33 @@
-import {ActivityIndicator, Modal, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {ActivityIndicator, Alert, Modal, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import Feather from "react-native-vector-icons/Feather";
 import {WebView} from "react-native-webview";
 import React, {useState} from "react";
 
 export function PayPalWebView(props) {
 
-    const {showGateway, setShowGateway} = props;
+    const {showGateway, setShowGateway, order} = props;
 
     const [progress, setProgress] = useState(false);
     const [progressClr, setProgressClr] = useState('#000');
+
+
+    // Nhận phản hồi từ PayPal
+    const onMessage = async (e) => {
+
+        let data = e.nativeEvent.data;
+
+        setShowGateway(false);
+        console.log(data);
+
+        let payment = JSON.parse(data);
+
+        if (payment.status === 'COMPLETED') {
+            // Gọi hàm đặt hàng khi thanh toán thành công
+            await order();
+        } else {
+            Alert.alert('', 'Thanh toán bằng PayPal thất bại. Bạn hãy thử lại !!!');
+        }
+    }
 
     return (
         <Modal
@@ -54,6 +73,7 @@ export function PayPalWebView(props) {
                     onLoad={() => {
                         setProgress(false);
                     }}
+                    onMessage={onMessage}
                 />
             </View>
         </Modal>

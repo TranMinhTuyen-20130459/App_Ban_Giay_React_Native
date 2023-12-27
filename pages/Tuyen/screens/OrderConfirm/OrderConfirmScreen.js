@@ -7,7 +7,7 @@ import {formatMoney, WINDOW_WIDTH} from "../../../../utils/Utils";
 import {useNavigation} from "@react-navigation/native";
 import {useDispatch, useSelector} from "react-redux";
 import {method_payments, setSelectedPayment} from "../../../../redux/slices/PaymentSlice";
-import {createOrder} from "../../util/CallApi";
+import {fetchDataMethodPOST} from "../../util/CallApi";
 import {API_POST_PATHS} from "../../../../common/PathApi";
 import {removeCart} from "../../../../redux/slices/CartsSlice";
 import {removeAllOrderProduct} from "../../../../redux/slices/OrderProductSlice";
@@ -16,6 +16,7 @@ import {PayPalWebView} from "./PayPalScreen";
 
 export default function OrderConfirmScreen() {
 
+    // show ra màn hình thanh toán bằng PayPal
     const [showPayPalGateway, setShowPayPalGateway] = useState(false);
 
     const SetShowPayPalGateway = (value) => {
@@ -44,6 +45,7 @@ export default function OrderConfirmScreen() {
 
     const total_price = ship_price + value_order();
 
+    // object này sẽ được convert thành chuỗi JSON => gửi tới API tạo đơn hàng
     const order_data = {
         name_customer: order_address?.name_customer,
         phone: order_address?.phone_number,
@@ -60,6 +62,7 @@ export default function OrderConfirmScreen() {
         }))
     }
 
+    // function dùng để xử khi nhấn vào button Đặt Hàng
     const handleClickBtOrder = async () => {
 
         //TH: Đơn hàng không hợp lệ
@@ -69,10 +72,29 @@ export default function OrderConfirmScreen() {
 
         //TH: Thanh toán bằng tiền mặt
         if (selectedPayment.toString() === method_payments.CASH) {
+            await Order();
+        }
 
-            const dataResponse = await createOrder(API_POST_PATHS.tao_don_hang, order_data)
+        //TH: Thanh toán bằng ZaloPay
+        else if (selectedPayment.toString() === method_payments.ZaloPay) {
+            Alert.alert('', 'Chức năng này đang được phát triển')
+        }
 
-            if (dataResponse) {
+        //TH: Thanh toán bằng Paypal
+        else if (selectedPayment.toString() === method_payments.PayPal) {
+            setShowPayPalGateway(true);
+        }
+
+    }
+
+    const Order = async () => {
+
+        console.log('Đây là function Order');
+        try {
+            const response = await fetchDataMethodPOST(API_POST_PATHS.tao_don_hang, order_data)
+
+            // Tạo đơn hàng thành công
+            if (response.status === 201) {
 
                 Alert.alert('Thông báo', 'Đặt hàng thành công', [{
                     text: 'OK',
@@ -92,18 +114,9 @@ export default function OrderConfirmScreen() {
                 Alert.alert('Thông báo', 'Đặt hàng thất bại')
             }
 
+        } catch (e) {
+            Alert.alert('Thông báo', 'Đặt hàng thất bại')
         }
-
-        //TH: Thanh toán bằng ZaloPay
-        else if (selectedPayment.toString() === method_payments.ZaloPay) {
-            Alert.alert('', 'Chức năng này đang được phát triển')
-        }
-
-        //TH: Thanh toán bằng Paypal
-        else if (selectedPayment.toString() === method_payments.PayPal) {
-            setShowPayPalGateway(true);
-        }
-
     }
 
     return (
@@ -119,7 +132,7 @@ export default function OrderConfirmScreen() {
                     </OrderValueComponent>
                 </View>
                 {showPayPalGateway ? (
-                    <PayPalWebView showGateway={showPayPalGateway} setShowGateway={SetShowPayPalGateway}/>
+                    <PayPalWebView showGateway={showPayPalGateway} setShowGateway={SetShowPayPalGateway} order={Order}/>
                 ) : null}
             </ScrollView>
             <FooterComponent handleClickBtOrder={handleClickBtOrder} total_price={total_price}></FooterComponent>
@@ -236,6 +249,7 @@ function PaymentsComponent({selectedPayment}) {
 
     const dispatch = useDispatch()
 
+    // Cập nhật lại phương thức thanh toán mới trong Redux
     const handlePaymentClick = (payment_method) => {
         dispatch(setSelectedPayment(payment_method))
     }
@@ -261,8 +275,7 @@ function PaymentsComponent({selectedPayment}) {
 
 function CashPaymentComponent({selectedPayment, handlePaymentClick}) {
 
-    return (
-        <TouchableOpacity
+    return (<TouchableOpacity
             style={[styles.methodPayment,
                 selectedPayment === method_payments.CASH && {backgroundColor: 'rgba(5, 0, 245, 0.1)'}]}
             onPress={() => handlePaymentClick(method_payments.CASH)}>
@@ -368,4 +381,3 @@ function FooterComponent(props) {
         </View>
     );
 }
-
