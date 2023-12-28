@@ -2,8 +2,6 @@ import {Dimensions, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View}
 import React from "react";
 import {useNavigation} from "@react-navigation/native";
 import {formatMoney} from "../../utils/Utils";
-
-
 const SuggestedProduct = ({data}) => {
     const navigation = useNavigation();
     return (
