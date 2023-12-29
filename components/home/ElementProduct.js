@@ -27,31 +27,6 @@ export default function ElementProduct({title, type}) {
                     </View>
                 </View>
             </View>
-            {/*<ScrollView horizontal showsHorizontalScrollIndicator={true}>*/}
-            {/*    <View style={styles.productTabContainer}>*/}
-            {/*        {buttons.map((button) => (*/}
-            {/*            <TouchableOpacity*/}
-            {/*                key={button.id}*/}
-            {/*                style={[*/}
-            {/*                    styles.productTab,*/}
-            {/*                    activeButton === button.id ? styles.activeProductTab : null,*/}
-            {/*                ]}*/}
-            {/*                onPress={() => handlePress(button.id)}*/}
-            {/*            >*/}
-            {/*                <Text*/}
-            {/*                    style={[*/}
-            {/*                        styles.productTabText,*/}
-            {/*                        activeButton === button.id*/}
-            {/*                            ? styles.activeProductTabText*/}
-            {/*                            : null,*/}
-            {/*                    ]}*/}
-            {/*                >*/}
-            {/*                    {button.label}*/}
-            {/*                </Text>*/}
-            {/*            </TouchableOpacity>*/}
-            {/*        ))}*/}
-            {/*    </View>*/}
-            {/*</ScrollView>*/}
             <ScrollView
                 horizontal
                 showsHorizontalScrollIndicator={true}
