@@ -1,5 +1,15 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, View, TextInput, TouchableOpacity, Text, Image, FlatList} from 'react-native';
+import {
+    StyleSheet,
+    View,
+    TextInput,
+    TouchableOpacity,
+    Text,
+    Image,
+    FlatList,
+    ActivityIndicator,
+    ScrollView
+} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import CartIcon from '../../components/CartIcon';
@@ -30,7 +40,7 @@ const CategoryScreen = () => {
         const getProducts = async (apiEndpoint) => {
             setLoading(true);
             try {
-                const response = await fetch(`${apiEndpoint}page=${currentPage}&pageSize=15`);
+                const response = await fetch(`${apiEndpoint}page=${currentPage}&pageSize=14`);
                 const responseData = await response.json();
 
                 setLeftData((prevData) => [...prevData, ...responseData.data]);
@@ -128,34 +138,37 @@ const CategoryScreen = () => {
             <View style={styles.body}>
                 <View style={styles.leftView}>
                     {categories.map((category, index) => (
-                        <TouchableOpacity
-                            key={index}
-                            onPress={() => handleCategoryPress(category.name)}
-                            style={[
-                                styles.category,
-                                pressedCategory === category.name && styles.buttonPressed,
-                            ]}
-                        >
-                            <View
-                                style={[styles.leftActiveBarPressed, pressedCategory === category.name && styles.leftActiveBar]}
-                            ></View>
-                            <View style={styles.rightActivebar}>
+                        <ScrollView>
+                            <TouchableOpacity
+                                key={index}
+                                onPress={() => handleCategoryPress(category.name)}
+                                style={[
+                                    styles.category,
+                                    pressedCategory === category.name && styles.buttonPressed,
+                                ]}
+                            >
                                 <View
-                                    style={[styles.leftActiveBarPressed, pressedCategory === category.name && styles.triangle]}
+                                    style={[styles.leftActiveBarPressed, pressedCategory === category.name && styles.leftActiveBar]}
                                 ></View>
-                            </View>
-                            <Image style={styles.imageCategory} alt={category.name} source={category.image}/>
-                            <Text style={styles.textCategory}>{category.name}</Text>
-                        </TouchableOpacity>
+                                <View style={styles.rightActivebar}>
+                                    <View
+                                        style={[styles.leftActiveBarPressed, pressedCategory === category.name && styles.triangle]}
+                                    ></View>
+                                </View>
+                                <Image style={styles.imageCategory} alt={category.name} source={category.image}/>
+                                <Text style={styles.textCategory}>{category.name}</Text>
+                            </TouchableOpacity>
+                        </ScrollView>
                     ))}
                 </View>
                 <View style={styles.rightView}>
                     <View>
                         <View style={styles.titleContainer}>
                             <Text style={styles.titleCategory}>{selectedCategory} </Text>
-                            <Icon name='filter' style={styles.iconFilter}></Icon>
-
+                            {/*<Icon name='filter' style={styles.iconFilter}></Icon>*/}
                         </View>
+                        {/* Biểu tượng loading */}
+                        {loading && <ActivityIndicator size="1000" color={colors.blueRoot}/>}
                         <FlatList
                             data={leftData}
                             keyExtractor={(item, index) => index.toString()}
@@ -175,7 +188,7 @@ const styles = StyleSheet.create({
     categoryMain: {
         flex: 1,
         flexDirection: 'column',
-        backgroundColor: 'rgb(0, 191, 255)',
+        backgroundColor: colors.blueRoot,
     },
     header: {
         flexDirection: 'row',
