@@ -19,7 +19,7 @@ function HomeScreen() {
                         <BannerGrid />
                         <SuggestedProduct data={data} />
                         {loadingMore && (
-                            <ActivityIndicator size="large" color="#0000ff" />
+                            <ActivityIndicator size="1000" color="#0000ff" />
                         )}
                     </View>
                 </View>

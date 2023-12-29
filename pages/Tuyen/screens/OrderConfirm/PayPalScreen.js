@@ -1,7 +1,8 @@
 import {ActivityIndicator, Alert, Modal, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import Feather from "react-native-vector-icons/Feather";
 import {WebView} from "react-native-webview";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
+import {StatusPaymentsId} from "./OrderConfirmScreen";
 
 export function PayPalWebView(props) {
 
@@ -10,24 +11,27 @@ export function PayPalWebView(props) {
     const [progress, setProgress] = useState(false);
     const [progressClr, setProgressClr] = useState('#000');
 
-
     // Nhận phản hồi từ PayPal
     const onMessage = async (e) => {
-
+        // Lấy dữ liệu từ thông điệp nhận được
         let data = e.nativeEvent.data;
 
+        // Ẩn modal sau khi nhận được thông điệp
         setShowGateway(false);
         console.log(data);
 
+        // Chuyển đổi dữ liệu JSON từ thông điệp
         let payment = JSON.parse(data);
 
+        // Kiểm tra trạng thái thanh toán từ dữ liệu
         if (payment.status === 'COMPLETED') {
             // Gọi hàm đặt hàng khi thanh toán thành công
-            await order();
+            await order(StatusPaymentsId.DA_THANH_TOAN);
         } else {
             Alert.alert('', 'Thanh toán bằng PayPal thất bại. Bạn hãy thử lại !!!');
         }
-    }
+    };
+
 
     return (
         <Modal
