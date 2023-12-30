@@ -1,6 +1,6 @@
 export const BASE_URL = 'http://tranhao123-001-site1.etempurl.com'
 
-export const API_GET_PATHS = {
+export const API_GET_PATHS = Object.freeze({
     lay_ds_giay_moi: `${BASE_URL}/api/product-shoes/ds-giay-moi?`,
     lay_ds_giay_hot: `${BASE_URL}/api/product-shoes/ds-giay-hot?`,
     lay_ds_giay_khuyen_mai: `${BASE_URL}/api/product-shoes/ds-giay-khuyen_mai?`,
@@ -19,8 +19,8 @@ export const API_GET_PATHS = {
 
     chi_tiet_don_hang: `${BASE_URL}/api/order/infor-order?`,
     lich_su_mua_hang: `${BASE_URL}/api/history/lich-su-mua-hang?`
-}
+})
 
-export const API_POST_PATHS = {
+export const API_POST_PATHS = Object.freeze({
     tao_don_hang: `${BASE_URL}/api/order/create-order`
-}
+})

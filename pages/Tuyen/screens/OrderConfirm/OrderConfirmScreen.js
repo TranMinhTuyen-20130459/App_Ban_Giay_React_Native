@@ -1,19 +1,39 @@
 import {styles} from "./OrderConfirm.styles";
 import {Alert, Image, ScrollView, Text, TouchableOpacity, View} from "react-native";
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {colors} from "../../../../theme";
 import {formatMoney, WINDOW_WIDTH} from "../../../../utils/Utils";
 import {useNavigation} from "@react-navigation/native";
 import {useDispatch, useSelector} from "react-redux";
 import {method_payments, setSelectedPayment} from "../../../../redux/slices/PaymentSlice";
-import {createOrder} from "../../util/CallApi";
+import {fetchDataMethodPOST} from "../../util/CallApi";
 import {API_POST_PATHS} from "../../../../common/PathApi";
 import {removeCart} from "../../../../redux/slices/CartsSlice";
 import {removeAllOrderProduct} from "../../../../redux/slices/OrderProductSlice";
 import {isValidOrder} from "../../util/CheckValid";
+import {PayPalWebView} from "./PayPalScreen";
+
+export const StatusPaymentsId = Object.freeze({
+    CHO_THANH_TOAN: 1,
+    DA_THANH_TOAN: 2
+})
+
+export const MethodPaymentsId = Object.freeze({
+    CASH: 1,
+    ZaloPay: 2,
+    PayPal: 3
+})
+
 
 export default function OrderConfirmScreen() {
+
+    // show ra màn hình thanh toán bằng PayPal
+    const [showPayPalGateway, setShowPayPalGateway] = useState(false);
+
+    const SetShowPayPalGateway = (value) => {
+        setShowPayPalGateway(value);
+    }
 
     const dispatch = useDispatch()
     const navigation = useNavigation()
@@ -34,9 +54,23 @@ export default function OrderConfirmScreen() {
     const value_order = () => {
         return order_items.reduce((total, item) => total + (item.price * item.quantity), 0)
     }
-
     const total_price = ship_price + value_order();
 
+    // Lấy ra id_method_payment dựa theo selectedPayment được lưu trong Redux
+    const getIdMethodPayment = () => {
+        switch (selectedPayment) {
+            case method_payments.CASH:
+                return MethodPaymentsId.CASH;
+            case method_payments.ZaloPay:
+                return MethodPaymentsId.ZaloPay;
+            case method_payments.PayPal:
+                return MethodPaymentsId.PayPal;
+            default:
+                return MethodPaymentsId.CASH;
+        }
+    }
+
+    // object này sẽ được convert thành chuỗi JSON => gửi tới API tạo đơn hàng
     const order_data = {
         name_customer: order_address?.name_customer,
         phone: order_address?.phone_number,
@@ -50,10 +84,23 @@ export default function OrderConfirmScreen() {
             name_size: item.size,
             quantity: item.quantity,
             price: item.price
-        }))
+        })),
+        payment: {
+            id_status_payment: StatusPaymentsId.CHO_THANH_TOAN,
+            id_method_payment: getIdMethodPayment()
+
+            /**
+             * + id_status_payment:1 => ĐANG CHỜ THANH TOÁN
+             * + id_status_payment:2 => ĐÃ THANH TOÁN
+             *
+             * + id_method_payment:1 => THANH TOÁN TIỀN MẶT(Cash)
+             * + id_method_payment:2 => THANH TOÁN ZALOPAY
+             * + id_method_payment:3 => THANH TOÁN PAYPAL
+             * */
+        }
     }
 
-
+    // function dùng để xử khi nhấn vào button Đặt Hàng
     const handleClickBtOrder = async () => {
 
         //TH: Đơn hàng không hợp lệ
@@ -63,10 +110,33 @@ export default function OrderConfirmScreen() {
 
         //TH: Thanh toán bằng tiền mặt
         if (selectedPayment.toString() === method_payments.CASH) {
+            await Order(StatusPaymentsId.CHO_THANH_TOAN)
+        }
 
-            const dataResponse = await createOrder(API_POST_PATHS.tao_don_hang, order_data)
+        //TH: Thanh toán bằng ZaloPay
+        else if (selectedPayment.toString() === method_payments.ZaloPay) {
+            Alert.alert('', 'Chức năng này đang được phát triển')
+        }
 
-            if (dataResponse) {
+        //TH: Thanh toán bằng Paypal
+        else if (selectedPayment.toString() === method_payments.PayPal) {
+            setShowPayPalGateway(true);
+        }
+
+    }
+    const Order = async (id_status_payment) => {
+
+        // Cập nhật lại trạng thái thanh toán đơn hàng
+        order_data.payment.id_status_payment = id_status_payment;
+
+        console.log('Đây là function Order');
+        console.log('Trạng thái thanh toán đơn hàng:', order_data.payment.id_status_payment);
+
+        try {
+            const response = await fetchDataMethodPOST(API_POST_PATHS.tao_don_hang, order_data)
+
+            // Tạo đơn hàng thành công
+            if (response.status === 201) {
 
                 Alert.alert('Thông báo', 'Đặt hàng thành công', [{
                     text: 'OK',
@@ -79,6 +149,7 @@ export default function OrderConfirmScreen() {
 
                         //=> chuyển hướng đến Trang Chủ
                         navigation.navigate('Main')
+
                     }
                 }])
 
@@ -86,13 +157,9 @@ export default function OrderConfirmScreen() {
                 Alert.alert('Thông báo', 'Đặt hàng thất bại')
             }
 
+        } catch (e) {
+            Alert.alert('Thông báo', 'Đặt hàng thất bại')
         }
-
-        //TH: Thanh toán bằng ZaloPay
-        else if (selectedPayment.toString() === method_payments.ZaloPay) {
-            Alert.alert('', 'Chức năng này đang được phát triển')
-        }
-
     }
 
     return (
@@ -104,10 +171,15 @@ export default function OrderConfirmScreen() {
                     <PaymentsComponent selectedPayment={selectedPayment}></PaymentsComponent>
                     <OrderValueComponent order_value={value_order()}
                                          ship_price={ship_price}
-                                         total_price={total_price}
-                    >
+                                         total_price={total_price}>
                     </OrderValueComponent>
                 </View>
+                {showPayPalGateway ? (
+                    <PayPalWebView showGateway={showPayPalGateway}
+                                   setShowGateway={SetShowPayPalGateway}
+                                   order={Order}
+                    />
+                ) : null}
             </ScrollView>
             <FooterComponent handleClickBtOrder={handleClickBtOrder} total_price={total_price}></FooterComponent>
         </View>
@@ -219,10 +291,13 @@ function OrderItem({data}) {
     )
 }
 
-function PaymentsComponent({selectedPayment}) {
+function PaymentsComponent(props) {
+
+    const {selectedPayment} = props;
 
     const dispatch = useDispatch()
 
+    // Cập nhật lại phương thức thanh toán mới trong Redux
     const handlePaymentClick = (payment_method) => {
         dispatch(setSelectedPayment(payment_method))
     }
@@ -230,13 +305,15 @@ function PaymentsComponent({selectedPayment}) {
     return (
         <View style={styles.payments}>
             <Text style={{fontSize: 16}}>Phương thức thanh toán</Text>
-
             <CashPaymentComponent
                 selectedPayment={selectedPayment}
                 handlePaymentClick={handlePaymentClick}
             />
-
             <ZaloPayComponent
+                selectedPayment={selectedPayment}
+                handlePaymentClick={handlePaymentClick}
+            />
+            <PayPalComponent
                 selectedPayment={selectedPayment}
                 handlePaymentClick={handlePaymentClick}
             />
@@ -244,13 +321,16 @@ function PaymentsComponent({selectedPayment}) {
     );
 }
 
-function CashPaymentComponent({selectedPayment, handlePaymentClick}) {
+function CashPaymentComponent(props) {
 
-    return (
-        <TouchableOpacity
+    const {selectedPayment, handlePaymentClick} = props;
+
+    return (<TouchableOpacity
             style={[styles.methodPayment,
                 selectedPayment === method_payments.CASH && {backgroundColor: 'rgba(5, 0, 245, 0.1)'}]}
-            onPress={() => handlePaymentClick(method_payments.CASH)}>
+            onPress={() => {
+                handlePaymentClick(method_payments.CASH);
+            }}>
             <Ionicons
                 name="stop-circle-outline"
                 size={30}
@@ -260,6 +340,26 @@ function CashPaymentComponent({selectedPayment, handlePaymentClick}) {
             </Ionicons>
             <Image source={require('../../images/money.png')} style={styles.img}></Image>
             <Text style={styles.nameMethodPayment}>Thanh toán tiền mặt</Text>
+        </TouchableOpacity>
+    )
+}
+
+function PayPalComponent({selectedPayment, handlePaymentClick}) {
+
+    return (
+        <TouchableOpacity
+            style={[styles.methodPayment,
+                selectedPayment === method_payments.PayPal && {backgroundColor: 'rgba(5, 0, 245, 0.1)'}]}
+            onPress={() => handlePaymentClick(method_payments.PayPal)}>
+            <Ionicons
+                name="stop-circle-outline"
+                size={30}
+                color='#0a74e4'
+                style={{opacity: selectedPayment === method_payments.PayPal ? 1 : 0}}
+            >
+            </Ionicons>
+            <Image source={require('../../images/paypal.png')} style={styles.img}></Image>
+            <Text style={styles.nameMethodPayment}>PayPal</Text>
         </TouchableOpacity>
     )
 }
@@ -333,4 +433,3 @@ function FooterComponent(props) {
         </View>
     );
 }
-

@@ -1,8 +1,9 @@
-import {Dimensions, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {Dimensions, Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import React from "react";
 import {useNavigation} from "@react-navigation/native";
 import {formatMoney} from "../../utils/Utils";
-
+import {StarProductComponent} from "./Star";
+import {colors} from "../../theme";
 
 const SuggestedProduct = ({data}) => {
     const navigation = useNavigation();
@@ -16,9 +17,9 @@ const SuggestedProduct = ({data}) => {
                 </View>
             </View>
             <View style={styles.listProduct}>
-                {data && data.map((item) => (
+                {data && data.map((item, index) => (
                     <TouchableOpacity style={styles.productItem}
-                                      key={item.id_product}
+                                      key={index}
                                       onPress={() =>
                                           navigation.navigate("ProductDetail", {
                                               productId: item.id_product,
@@ -31,8 +32,9 @@ const SuggestedProduct = ({data}) => {
                             />
                         </View>
                         <View style={styles.titleProductWrap}>
-                            <Text numberOfLines={2} ellipsizeMode="tail"
+                            <Text numberOfLines={1} ellipsizeMode="tail"
                                   style={styles.titleProduct}>{item.name_product}</Text>
+                            <StarProductComponent margin={{marginHorizontal: 0}} number_star={item.star_review}/>
                         </View>
                         <View style={styles.priceProductWrap}>
                             <Text style={styles.priceProduct}>{formatMoney(item.listed_price)}</Text>
@@ -43,6 +45,7 @@ const SuggestedProduct = ({data}) => {
         </View>
     )
 }
+
 const {width} = Dimensions.get('window');
 const {height} = Dimensions.get('window');
 const styles = StyleSheet.create({
@@ -124,6 +127,10 @@ const styles = StyleSheet.create({
         lineHeight: 24, // line-height: 150%; (tính theo fontSize * 1.5)
         fontWeight: '500', // font-weight: 500;
         color: 'rgb(39, 39, 42)', // color: rgb(39, 39, 42);
+    },
+    starContainer: {
+        flexDirection: "row",
+        backgroundColor: colors.blueRoot
     },
 })
 export default SuggestedProduct;

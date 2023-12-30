@@ -1,4 +1,4 @@
-import { configureStore } from "@reduxjs/toolkit";
+import {configureStore} from "@reduxjs/toolkit";
 import cartsReducer from "./slices/CartsSlice";
 import addressReducer from "./slices/OrderAddressSlice";
 import CategoryReducer from "./slices/CategorySlice";
@@ -14,7 +14,11 @@ const store = configureStore({
         category: CategoryReducer,
         payment: paymentReducer,
         orderProducts: orderProductReducer,
-    }
+    },
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware({
+            serializableCheck: false,
+        }),
 })
 
 export default store;
