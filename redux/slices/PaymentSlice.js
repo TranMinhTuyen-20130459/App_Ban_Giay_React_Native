@@ -1,10 +1,12 @@
 import {createSlice} from "@reduxjs/toolkit";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export const method_payments = {
+// Sử dụng Object.freeze để đóng băng đối tượng, ngăn chặn bất kỳ thay đổi nào trên đối tượng.
+export const method_payments = Object.freeze({
     CASH: 'CASH',
-    ZaloPay: 'ZaloPay'
-}
+    ZaloPay: 'ZaloPay',
+    PayPal: 'PayPal'
+});
 
 export const getMethodPaymentFromAsyncStorage = async () => {
 

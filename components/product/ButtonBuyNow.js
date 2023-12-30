@@ -33,8 +33,5 @@ const stylesBuy = StyleSheet.create({
     borderColor: colors.blueRoot, // Màu viền của nút "Buy"
     borderWidth: 1,
     backgroundColor: "white",
-  },
-  buttonText: {
-    fontWeight: "bold", // Màu chữ của nút (thay đổi theo yêu cầu của bạn)
-  },
+  }
 });

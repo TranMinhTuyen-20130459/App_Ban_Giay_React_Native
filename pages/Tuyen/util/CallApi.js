@@ -20,30 +20,17 @@ export async function fetchDataMethodGET(apiUrl) {
     }
 }
 
-// Gọi API để thêm đơn hàng vào hệ thống
-export async function createOrder(apiUrl, order_data) {
-    try {
+// Hàm để gửi dữ liệu lên API
+export async function fetchDataMethodPOST(apiUrl, data) {
+    console.log('Url: ', apiUrl)
+    console.log('Data: ', data)
 
-        console.log('Url: ', apiUrl)
-        console.log('Thông tin đơn hàng: ', order_data)
-
-        const response = await fetch(apiUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(order_data),
-        });
-
-        // TH: Không tạo được đơn hàng
-        if (response.status !== 201)
-            throw new Error(`Failed to create order. Status: ${response.status}`)
-
-        return await response.json()
-    } catch (e) {
-
-        // console.error(e)
-        return null;
-    }
+    return await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    });
 }
 
