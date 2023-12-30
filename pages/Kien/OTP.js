@@ -30,8 +30,10 @@ const digitsOnly = phone.replace(/\D/g, '');
 
 // Loại bỏ số 84 ở đầu nếu có
 let formattedPhoneNumber = digitsOnly;
-if (digitsOnly.startsWith('84')) {
+if (digitsOnly.startsWith('840')) {
   formattedPhoneNumber = digitsOnly.substring(2);
+}else{
+  formattedPhoneNumber = '0'+ digitsOnly.substring(2);
 }
 useEffect(()=>{
     setVerificationId(verification)
@@ -40,9 +42,6 @@ useEffect(()=>{
     setInternalVal(val)
     console.log(internalVal.length)
     console.log(internalVal)
-    if(internalVal.length===5){
-        confirmCode();
-    }
   }
   useEffect(() => {
     clockAll = setInterval(() => {
@@ -73,6 +72,16 @@ useEffect(()=>{
   const onChangeNumber = () => {
     setInternalVal("");
   }
+//   if(internalVal.length===5){
+//     confirmCode();
+// }
+    useEffect(() => {
+      console.log(internalVal)
+      console.log(internalVal.length)
+        if(internalVal.length===6){
+    confirmCode();
+      }
+    }, [internalVal])
   useEffect(() => {
     textInput.focus()
   }, [])

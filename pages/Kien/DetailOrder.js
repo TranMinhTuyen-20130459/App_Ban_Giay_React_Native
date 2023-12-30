@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, Image, ScrollView,ProgressBarAndroid, TouchableOpacity, StyleSheet } from 'react-native';
 import { ProgressBar } from 'react-native-progress';
 import { API_GET_PATHS } from '../../common/PathApi';
-
+import { colors } from '../../theme';
 const OrderDetailsScreen = ({ route }) => {
   const id = route.params?.id ;
   const [data, setData] = useState(null);
@@ -76,17 +76,17 @@ const OrderDetailsScreen = ({ route }) => {
                 <Text style={styles.strong}>Estimated Delivery time: {data.infor_order.time_order}</Text>
               </Text>
               <Text style={styles.col}>
-                <Text style={styles.strong}>Địa chỉ: </Text>NLU
+                <Text style={styles.strong}>Địa chỉ: </Text>{data.infor_order.address}
               </Text>
-            
+
               <Text style={styles.col}>
-
-                <Text style={styles.strong}>Phone: </Text>{phone}
-
-           
+                <Text style={styles.strong}>Phone: </Text>{data.infor_order.phone}
               </Text>
               <Text style={styles.col}>
-                <Text style={styles.strong}>Status:  {data.infor_order.name_status_order}</Text>
+                <Text style={styles.strong}>Phương thức thanh toán: </Text>{data.infor_order.payment.name_method_payment}
+              </Text>
+              <Text style={styles.col}>
+                <Text style={styles.strong}>Trạng thái:  {data.infor_order.name_status_order}</Text>
               </Text>
             </View>
           </View> 
@@ -127,8 +127,10 @@ const OrderDetailsScreen = ({ route }) => {
            <View style={styles.hr} />
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
             <View style={styles.productList}>
-            {data.order_details.map((item) => (
-                    <TouchableOpacity onPress={() => console.log("Product Pressed")}>
+            {data.order_details.map((item,index) => (
+                    <TouchableOpacity key={index} onPress={() =>  navigation.navigate("ProductDetail", {
+                                                                                          productId: item.id_product,
+                                                                                      })}>
                     <View style={styles.productItem}>
                       <Image
                         source={{ uri: item.list_image_product[0].path_image}}
@@ -284,7 +286,7 @@ const styles = StyleSheet.create({
    
   },
   btn: {
-    backgroundColor: '#ffc107',
+    backgroundColor: colors.blueRoot,
     padding: 10,
     borderRadius: 5,
     alignItems: 'center',
