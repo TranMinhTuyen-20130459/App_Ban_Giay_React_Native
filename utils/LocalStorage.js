@@ -57,7 +57,25 @@ export const getHistoryFromAsyncStorage = async () => {
         const jsonHistoryData = await AsyncStorage.getItem("historyViewProduct");
         return jsonHistoryData != null ? JSON.parse(jsonHistoryData) : null;
     } catch (error) {
-        console.error("Lỗi khi đọc giỏ hàng:", error);
+        console.error("Lỗi khi đọc lịch sử:", error);
+        return null;
+    }
+};
+export const saveFavoriesToAsyncStorage = async (data) => {
+    try {
+        const jsonHistoryData = JSON.stringify(data);
+        await AsyncStorage.setItem("favories", jsonHistoryData);
+    
+    } catch (error) {
+        console.error("Lỗi khi lưu sản phẩm yêu thích:", error);
+    }
+};
+export const getFavoriesFromAsyncStorage = async () => {
+    try {
+        const jsonHistoryData = await AsyncStorage.getItem("favories");
+        return jsonHistoryData != null ? JSON.parse(jsonHistoryData) : null;
+    } catch (error) {
+        console.error("Lỗi khi đọc sản phẩm yêu thích:", error);
         return null;
     }
 };

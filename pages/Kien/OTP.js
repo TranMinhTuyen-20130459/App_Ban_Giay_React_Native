@@ -13,7 +13,7 @@ const OTPScreen = ({navigation}) => {
   let clockAll = null
   const [otp, setOtp] = useState('');
   const length = 6;
-  const defaultCountdown = 5
+  const defaultCountdown = 60
   const [internalVal, setInternalVal] = useState('');
   const [countdown, setCountdown] = useState(defaultCountdown)
   const [enableResend, setEnableResend] = useState(false)
