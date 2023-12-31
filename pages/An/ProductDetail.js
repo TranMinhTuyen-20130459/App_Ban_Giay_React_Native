@@ -24,7 +24,9 @@ import {addOrderProduct, removeAllOrderProduct} from "../../redux/slices/OrderPr
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {addHistory} from "../../redux/slices/HistoryView";
 import {API_GET_PATHS} from "../../common/PathApi";
-
+import { addFavories, removeFavories } from "../../redux/slices/Favories";
+import Modal from 'react-native-modal';
+import QRCode from 'react-native-qrcode-svg';
 const fakeData = [
     {
         quantity_star: 5,
@@ -89,7 +91,8 @@ const fakeData = [
 ];
 
 export const ProducDetail = ({navigation}) => {
-
+    // hiển thị modal
+    const [isModalVisible, setModalVisible] = useState(false);
     // xử lý hiển thị đánh giá
     const [visibleComments, setVisibleComments] = useState(3);
 
@@ -110,6 +113,8 @@ export const ProducDetail = ({navigation}) => {
     const [idV4, setIdV4] = useState();
     const [idV40, setIdV40] = useState();
     const [viewedProducts, setViewedProducts] = useState([]);
+    const [favoriesProducts, setFavoriesProducts] = useState([]);
+    const [isFavoriesProducts, setISFavoriesProducts] = useState(false);
     const route = useRoute();
     const {productId} = route.params;
 
@@ -118,6 +123,7 @@ export const ProducDetail = ({navigation}) => {
     const carts = useSelector((state) => state.carts);
     const orders = useSelector((state) => state.orderProducts)
     const history = useSelector((state) => state.historys)
+    const favories = useSelector((state) => state.favories)
     // theo dõi giỏ hàng
     useEffect(() => {
         const existingCartItem = carts.find((item) => {
@@ -126,7 +132,7 @@ export const ProducDetail = ({navigation}) => {
         setQuantity(existingCartItem ? existingCartItem.quantity + 1 : 1);
         setIdV4(existingCartItem && existingCartItem.idv4);
     }, [carts]);
-
+  
 
     const link =
         API_GET_PATHS.lay_thong_tin_san_pham + "id=" +
@@ -170,11 +176,10 @@ export const ProducDetail = ({navigation}) => {
         [{nativeEvent: {contentOffset: {y: scrollY}}}],
         {useNativeDriver: false} // Make sure to set useNativeDriver to false
     );
-// Lấy dữ liệu từ AsyncStorage khi component được mount
+    // Lấy dữ liệu từ AsyncStorage khi component được mount
     const getDataFromStorage = async () => {
         try {
             // Lấy dữ liệu từ AsyncStorage
-
             console.log("H" + storedProducts)
             // Nếu có dữ liệu, cập nhật state
             if (storedProducts !== null) {
@@ -204,9 +209,11 @@ export const ProducDetail = ({navigation}) => {
                 console.error("Error fetching data:", error);
             }
         };
-
+        const existingHistoryItem = favories.find((item) => {
+            return item.id === productId;
+        })
         fetchData();
-
+        setISFavoriesProducts(existingHistoryItem)
     }, []);
     const addToHistoryView = (productData) => {
         const existingHistoryItem = history.find((item) => {
@@ -226,6 +233,30 @@ export const ProducDetail = ({navigation}) => {
 
             // Nếu sản phẩm đã tồn tại trong giỏ hàng, thì cập nhật
             dispatch(addHistory(newCartItem));
+        }
+    };
+    const addToFavories = () => {
+        console.log("F"+favories)
+        const existingHistoryItem = favories.find((item) => {
+            return item.id === productId;
+        })
+        const newCartItem = {
+            id: productData.id_product,
+            title: productData.name_product,
+            price: productData.listed_price,
+            discountPrice: productData.promotional_price,
+            size: size === undefined ? productData.list_size[0].name_size : size,
+            color: color ? "Trắng" : "Xanh",
+            quantity: 1,
+            path_img: productData ? productData.list_image[0].path_image : "",
+        };
+        if (!existingHistoryItem) {
+            // Nếu sản phẩm đã tồn tại trong giỏ hàng, thì cập nhật
+            setISFavoriesProducts(true)
+            dispatch(addFavories(newCartItem));
+        }else{
+            setISFavoriesProducts(false)
+            dispatch(removeFavories(productId))
         }
     };
     const handleAddToCart = () => {
@@ -282,7 +313,10 @@ export const ProducDetail = ({navigation}) => {
 
         }
     };
-
+    // hiện tắt qr code
+    const toggleModal = () => {
+        setModalVisible(!isModalVisible);
+    };
     // nếu fecth chưa hết thì hiển thị loading..
     if (!productData) {
         return (
@@ -324,9 +358,15 @@ export const ProducDetail = ({navigation}) => {
                             <View style={styles.margin10}>
                                 <View>
                                     <View>
+                                        <View style={{flexDirection: 'row',justifyContent:"space-between"}}> 
                                         <Text style={{fontSize: 30}}>
                                             {productData.name_product}
+                                           
                                         </Text>
+                                            <Ionicons style={styles.icon_mic} name={isFavoriesProducts? 'heart':'heart-outline'} size={26} color={'red'} 
+                                        onPress={addToFavories} />
+                                        </View>
+                                        
                                         <Text>
                                             <View style={styles.starContainer}>
                                                 {Array.from({length: 5}, (v, i) => (
@@ -346,7 +386,9 @@ export const ProducDetail = ({navigation}) => {
                                             {" ("}
                                             {quantity_rating}
                                             {") "}| Đã bán {quantity_sold}+
+                                           
                                         </Text>
+                                       
                                         <View
                                             style={{
                                                 flexDirection: "row",
@@ -397,9 +439,32 @@ export const ProducDetail = ({navigation}) => {
                         </View>
 
                         <View style={styles.margin10}>
-                            <Text style={{fontSize: 20, fontWeight: "bold"}}>
-                                Thông tin sản phẩm
-                            </Text>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', }}>
+                                <Text style={{ fontSize: 20, fontWeight: "bold" }}>
+                                    Thông tin sản phẩm
+                                </Text>
+                                <Ionicons style={styles.icon_qr} name="qr-code-outline" size={26} color={'#aaa'}
+                                   onPress={toggleModal} />
+                            </View>
+                             {/* Modal hiển thị mã QR */}
+                             <Modal isVisible={isModalVisible} onBackdropPress={toggleModal}  style={styles.modal}>
+                                <View style={styles.modalContent}>
+                                    {/* Hiển thị thông tin sản phẩm */}
+                                    <Text style={styles.productName}>Tên sản phẩm: {productData.name_product}</Text>
+                                    <Text style={styles.productPrice}>Giá:  {formatCurrency(productData.listed_price)}</Text>
+
+                                    {/* Hiển thị mã QR */}
+                                    <QRCode
+                                        value={JSON.stringify(productData)}
+                                        size={200}
+                                    />
+
+                                    {/* Nút hoặc icon để đóng modal */}
+                                    <TouchableOpacity onPress={toggleModal} style={styles.closeButton}>
+                                        <Text style={styles.closeButtonText}>Đóng</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </Modal>
                             <Text>
                                 Nike Air Force 1 Ra mắt vào năm 1982 bởi nhà thiết kế Bruce
                                 Kilgore, ngay lập tức mẫu giày Nike Air Force 1 (AF1) đã trở
@@ -546,4 +611,44 @@ const styles = StyleSheet.create({
         paddingVertical: 5,
         borderRadius: 5,
     },
+    icon_mic: {
+       
+        padding: 1,
+        borderRadius: 50,
+        fontSize: 30
+    },icon_qr: {
+        padding: 1,
+        borderRadius: 50,
+        fontSize: 30,
+        marginRight: 25
+    },
+    modal: {
+        justifyContent: 'center',
+        alignItems: 'center',
+      },
+      modalContent: {
+        backgroundColor: 'white',
+        padding: 20,
+        borderRadius: 10,
+        alignItems: 'center',
+      },
+      productName: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginBottom: 10,
+      },
+      productPrice: {
+        fontSize: 16,
+        marginBottom: 20,
+      },
+      closeButton: {
+        backgroundColor: 'red',
+        padding: 10,
+        borderRadius: 5,
+        marginTop: 10,
+      },
+      closeButtonText: {
+        color: 'white',
+        fontSize: 16,
+      },
 });

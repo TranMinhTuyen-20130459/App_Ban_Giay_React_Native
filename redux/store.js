@@ -5,6 +5,7 @@ import CategoryReducer from "./slices/CategorySlice";
 import paymentReducer from './slices/PaymentSlice'
 import orderProductReducer from "./slices/OrderProductSlice";
 import HistoryView from "./slices/HistoryView";
+import Favories from "./slices/Favories";
 
 const store = configureStore({
     reducer: {
@@ -14,6 +15,7 @@ const store = configureStore({
         category: CategoryReducer,
         payment: paymentReducer,
         orderProducts: orderProductReducer,
+        favories: Favories
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

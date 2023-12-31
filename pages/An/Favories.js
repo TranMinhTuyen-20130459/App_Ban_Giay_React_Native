@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 
 import { View, Text, FlatList, Image, ScrollView, ProgressBarAndroid, TouchableOpacity, StyleSheet, } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -9,36 +9,28 @@ import { Button } from 'react-native';
 
 import { useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useSelector } from 'react-redux';
-const HistoryViewProduct = () => {
-    const scrollViewRef = useRef();
-    const[size,setSize] = useState(10);
-    const [loading, setLoading] = useState(false);
-    const[history,setHistory] = useState([])
-    const listHist =useSelector((state) => state.historys)
+import { useDispatch, useSelector } from 'react-redux';
+import { removeFavories } from '../../redux/slices/Favories';
+const FavoriesViewProduct = () => {
+    const dispatch = useDispatch();
+    const favories = useSelector((state) => state.favories)
     const numberWithCommas = (number) => {
         return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
       };
-    useEffect(() => {
-        const list = listHist
-       setHistory(list.slice(0, size))
-    }, [size]);
-    const handleScroll = ({nativeEvent}) => {
-        const {layoutMeasurement, contentOffset, contentSize} = nativeEvent;
-        const isCloseToBottom =
-            layoutMeasurement.width + contentOffset.x >= contentSize.width - 20;
+   
 
-        if (isCloseToBottom && !loading) {
-            setSize(size+10)
-        }
-    };
     const navigation = useNavigation();
+    const removeToFavories = (id) => {
+        
+        dispatch(removeFavories(id))
+       
+    };
+
     return (
         <View style={styles.container}>
-          <ScrollView  onScroll={handleScroll}
-        ref={scrollViewRef}>
+          <ScrollView>
             <View style={styles.listProduct}>
-                    {history.map((item,index) => (
+                    {favories.map((item,index) => (
                             <TouchableOpacity
                             style={styles.productItem}
                             key={index}
@@ -48,6 +40,7 @@ const HistoryViewProduct = () => {
                                 })
                             }
                             >
+                            <View>
                             <View style={styles.imageProductWrap}>
                                 <Image
                                 source={{ uri: `${item.path_img}` }}
@@ -65,21 +58,15 @@ const HistoryViewProduct = () => {
                             </View>
                             <View style={styles.priceProductWrap}>
                                 <Text style={styles.priceProduct}>{numberWithCommas(item.price)} đ</Text>
+                                <Ionicons style={styles.icon_mic} name='heart' size={26} color={'red'} onPress={() => removeToFavories(item.id)} />
+                            </View>
                             </View>
                             </TouchableOpacity>
                         ))}
                     </View>
                </ScrollView>
         </View>
-        // <View>
-        //     <FlatList
-        //         style={styles.upperHeaderPlaceholder}
-        //         showsVerticalScrollIndicator={false}
-        //         data={history}
-        //         renderItem={renderItem}
-        //         keyExtractor={(item) => item.idv4}
-        //     />
-        // </View>
+       
 
     );
 };
@@ -120,7 +107,7 @@ productItem:{
     display: "flex",
     // justifyContent: "center",
     width: (width - 32 - 16) * 0.5,
-    height: (height) * 0.4,
+    height: (height) * 0.3,
     gap: 8,
     backgroundColor: 'rgb(255, 255, 255)', // background: rgb(255, 255, 255);
     borderWidth: 1, // border: 1px solid rgb(235, 235, 240);
@@ -154,7 +141,9 @@ titleProduct:{
 },
 priceProductWrap:{
     paddingHorizontal: 8,
-    paddingBottom: 8
+    paddingBottom: 8,
+    flexDirection:'row',
+    justifyContent: 'space-between'
 },
 priceProduct:{
     margin: 0, // margin: 0px;
@@ -193,4 +182,4 @@ line:{
 }
 });
 
-export default HistoryViewProduct;
+export default FavoriesViewProduct;

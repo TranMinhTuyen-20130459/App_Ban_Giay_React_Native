@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useEffect } from "react";
+import { useEffect,useState } from "react";
 import { Provider } from "react-redux";
 import store from "./redux/store";
 import { NavigationContainer } from "@react-navigation/native";
@@ -11,8 +11,10 @@ import { colors } from "./theme";
 import {
     getCartFromAsyncStorage,
     getHistoryFromAsyncStorage,
+    getFavoriesFromAsyncStorage,
     saveCartToAsyncStorage,
-    saveHistoryViewToAsyncStorage
+    saveHistoryViewToAsyncStorage,
+    saveFavoriesToAsyncStorage
 } from "./utils/LocalStorage";
 
 import { addCart } from "./redux/slices/CartsSlice";
@@ -36,6 +38,8 @@ import { AppState } from "react-native";
 import { addHistory } from "./redux/slices/HistoryView";
 
 import OTPScreen from "./pages/Kien/OTP";
+import { addFavories } from "./redux/slices/Favories";
+import FavoriesViewProduct from "./pages/An/Favories";
 
 function App() {
     const Stack = createNativeStackNavigator();
@@ -48,7 +52,8 @@ function App() {
                 const carts = await getCartFromAsyncStorage();
                 // Gọi hàm để lấy dữ liệu sản phẩm đã xem từ AsyncStorage
                 const history = await getHistoryFromAsyncStorage();
-
+                // Gọi hàm để lấy dữ liệu sản phẩm yêu thích từ AsyncStorage
+                const favories = await getFavoriesFromAsyncStorage();
 
                 // Nếu có dữ liệu, dispatch action để cập nhật giỏ hàng trong Redux
                 if (carts) {
@@ -61,6 +66,12 @@ function App() {
                         store.dispatch(addHistory(item));
                     });
                 }
+                if (favories) {
+                    favories.forEach((item) => {
+                        store.dispatch(addFavories(item));
+                    });
+                }
+
 
                 // Gọi hàm để lấy dữ liệu địa chỉ từ AsyncStorage
                 const storedInfoAddress = await getInfoAddressFromAsyncStorage();
@@ -84,10 +95,11 @@ function App() {
                         // Lưu giỏ hàng xuống AsyncStorage
                         saveCartToAsyncStorage(cartRedux);
                         const historyRedux = store.getState().historys;
-                        // Lưu giỏ hàng xuống AsyncStorage
-
+                        // Lưu lịch sử đã xem xuống AsyncStorage
                         saveHistoryViewToAsyncStorage(historyRedux)
-
+                        // Lưu sản phẩm ưa thích xuống AsyncStorage
+                        const favorriesRedux = store.getState().favories;
+                        saveFavoriesToAsyncStorage(favorriesRedux)
                     }
                 };
 
@@ -229,7 +241,7 @@ function App() {
                             },
                             headerTintColor: 'white',
                         }} />
-                 
+
                     <Stack.Screen name="otp" component={OTPScreen}
                         options={{
                             title: 'OTP',
@@ -239,7 +251,15 @@ function App() {
                             },
                             headerTintColor: 'white',
                         }} />
-
+                    <Stack.Screen name="favories" component={FavoriesViewProduct}
+                        options={{
+                            title: 'Danh sách sản phẩm yêu thích',
+                            headerTitleAlign: 'center',
+                            headerStyle: {
+                                backgroundColor: colors.blueRoot,
+                            },
+                            headerTintColor: 'white',
+                        }} />
                 </Stack.Navigator>
             </NavigationContainer>
         </Provider>

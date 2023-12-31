@@ -1,5 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef} from 'react';
 
 import {View, Text, Image, ScrollView, ProgressBarAndroid, TouchableOpacity, StyleSheet} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -9,18 +9,26 @@ import {Button} from 'react-native';
 import Header from './home/Header';
 import {useState} from 'react';
 import {API_GET_PATHS} from "../common/PathApi";
+import { StarProductComponent } from './home/Star';
 
 const ResultSearch = ({route}) => {
     // Lấy dữ liệu từ params
     const searchQuery = route.params?.query || 'Không có dữ liệu tìm kiếm';
     const [data, setData] = useState([]);
+    const scrollViewRef = useRef();
+    const[size,setSize] = useState(10);
+    const [loading, setLoading] = useState(false);
+    
+    const numberWithCommas = (number) => {
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      };
     // gọi api để lấy dữ liệu
     const fetchData = async () => {
         try {
 
             const response = await fetch(
                 API_GET_PATHS.lay_ds_san_pham_theo_ten + "name=" +
-                `${searchQuery}` + "&quantity=4"
+                `${searchQuery}` + "&quantity="+`${size}`
             );
 
             const jsonData = await response.json();
@@ -35,7 +43,7 @@ const ResultSearch = ({route}) => {
         // Gọi hàm tìm kiếm mỗi khi giá trị của input thay đổi
         fetchData()
 
-    }, [searchQuery]);
+    }, [size]);
 
     const handleButtonPress = () => {
         // Xử lý khi nút được nhấn
@@ -48,13 +56,14 @@ const ResultSearch = ({route}) => {
             layoutMeasurement.width + contentOffset.x >= contentSize.width - 20;
 
         if (isCloseToBottom && !loading) {
-            fetchData();
+            setSize(size+10)
         }
     };
-
     const navigation = useNavigation();
     return (
-        <ScrollView>
+        <ScrollView  
+        onScroll={handleScroll}
+        ref={scrollViewRef}>
             <View style={styles.container}>
                 <Header></Header>
                 <View style={styles.fillter}>
@@ -88,6 +97,7 @@ const ResultSearch = ({route}) => {
                                 })
                             }
                         >
+                            <View>
                             <View style={styles.imageProductWrap}>
                                 <Image
                                     source={{uri: `${item.list_image[0].path_image}`}}
@@ -102,9 +112,13 @@ const ResultSearch = ({route}) => {
                                 >
                                     {item.name_product}
                                 </Text>
+                             
+                                <StarProductComponent margin={{marginHorizontal: 0}} number_star={item.star_review}/>
                             </View>
                             <View style={styles.priceProductWrap}>
-                                <Text style={styles.priceProduct}>{item.listed_price}</Text>
+                            <Text style={styles.priceProduct}>{numberWithCommas(item.listed_price)} đ</Text>
+                          
+                            </View>
                             </View>
                         </TouchableOpacity>
                     ))}

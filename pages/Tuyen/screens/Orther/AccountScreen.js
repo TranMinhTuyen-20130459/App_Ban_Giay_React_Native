@@ -164,7 +164,7 @@ function AccountScreen() {
               </TouchableOpacity>
 
               <TouchableOpacity style={styles.itemIconOrder}
-                onPress={() => navigation.navigate('Setting')}
+                onPress={() => navigation.navigate('favories')}
               >
                 <View style={styles.containerIconLove}>
                   <Ionicons name="heart" size={20} color={colors.redHeart}></Ionicons>
