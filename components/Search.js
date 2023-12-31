@@ -1,6 +1,7 @@
-import {useNavigation} from '@react-navigation/native';
-import React, {useState, useEffect} from 'react';
+import { useNavigation } from '@react-navigation/native';
+import React, { useState, useEffect } from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+// import Voice from '@react-native-voice/voice'
 import {
     View,
     Text,
@@ -13,12 +14,24 @@ import {
     Dimensions,
     FlatList
 } from 'react-native';
-import {API_GET_PATHS} from "../common/PathApi";
+import { API_GET_PATHS } from "../common/PathApi";
 
 const Search = () => {
     const navigation = useNavigation();
     const [searchQuery, setSearchQuery] = useState('');
     const [data, setData] = useState([]);
+    const [isVoice , setIsVoice] = useState(false);
+
+    // Voice.onSpeechStart=()=> setIsVoice(true);
+    // Voice.onSpeechEnd=()=> setIsVoice(false);
+    // Voice.onSpeechResults= result => setSearchQuery(result.value[0]);
+
+//     const startRecording = async ()=>{
+//             await Voice.start('en-US')    
+//     } 
+//     const stopRecording = async ()=>{
+//         await Voice.stop()    
+// }
     // gọi api để lấy dữ liệu
     const fetchData = async () => {
         try {
@@ -49,9 +62,9 @@ const Search = () => {
     }, [searchQuery]);
     const handleSearch = () => {
         // Thực hiện xử lý tìm kiếm và truyền dữ liệu đến trang tìm kiếm
-        navigation.navigate('SearchResult', {query: searchQuery});
+        navigation.navigate('SearchResult', { query: searchQuery });
     };
-    const renderProduct = ({item}) => (
+    const renderProduct = ({ item }) => (
 
         <Text onPress={() => onItemSelected(item)}>{item.name_product}</Text>
     );
@@ -60,8 +73,10 @@ const Search = () => {
         <View style={styles.container}>
 
             <View style={styles.headerSearch}>
+
                 <Ionicons style={styles.icon_back} name="arrow-back-outline" size={26} color={'#aaa'}
-                          onPress={() => navigation.goBack()}/>
+                    onPress={() => navigation.goBack()} />
+               
                 <TextInput
                     placeholder="Giao nhanh 2H & đúng khung giờ"
                     style={styles.searchTextInput}
@@ -69,6 +84,11 @@ const Search = () => {
                     onChangeText={handleInputChange}
                     onSubmitEditing={handleSearch}
                 />
+                    <Ionicons style={styles.icon_mic} name="mic-outline" size={26} color={'#aaa'}
+                    onPress={() =>
+                        navigation.navigate("otp")
+                    } />
+
             </View>
             <View>{searchQuery !== '' ? (data.map((item) => (
                 <TouchableOpacity
@@ -82,7 +102,7 @@ const Search = () => {
                 >
 
                     <Text style={styles.placeholder_search}><Ionicons name="search-circle-outline" size={16}
-                                                                      color={'#aaa'}/> {item.name_product}</Text>
+                        color={'#aaa'} /> {item.name_product}</Text>
                     <Text style={styles.line}></Text>
                 </TouchableOpacity>
             ))) : <Text></Text>}</View>
@@ -93,25 +113,25 @@ const Search = () => {
             </View>
             <View style={styles.comp}>
                 <View style={styles.trending}>
-                    <Ionicons style={styles.icon_tren} name="trending-up-outline"/>
+                    <Ionicons style={styles.icon_tren} name="trending-up-outline" />
                     <Text style={styles.text_tren}>Tìm kiếm phổ biến</Text>
                 </View>
                 <View style={styles.list_tren}>
                     <View style={styles.item_tren}>
                         <Image style={styles.item_tren_image}
-                               source={{uri: 'https://salt.tikicdn.com/ts/upload/0e/07/78/ee828743c9afa9792cf20d75995e134e.png'}}
+                            source={{ uri: 'https://salt.tikicdn.com/ts/upload/0e/07/78/ee828743c9afa9792cf20d75995e134e.png' }}
                         ></Image>
                         <Text style={styles.item_tren_text}>Colagen</Text>
                     </View>
                     <View style={styles.item_tren}>
                         <Image style={styles.item_tren_image}
-                               source={{uri: 'https://salt.tikicdn.com/ts/upload/0e/07/78/ee828743c9afa9792cf20d75995e134e.png'}}
+                            source={{ uri: 'https://salt.tikicdn.com/ts/upload/0e/07/78/ee828743c9afa9792cf20d75995e134e.png' }}
                         ></Image>
                         <Text style={styles.item_tren_text}>Colagen</Text>
                     </View>
                     <View style={styles.item_tren}>
                         <Image style={styles.item_tren_image}
-                               source={{uri: 'https://salt.tikicdn.com/ts/upload/0e/07/78/ee828743c9afa9792cf20d75995e134e.png'}}
+                            source={{ uri: 'https://salt.tikicdn.com/ts/upload/0e/07/78/ee828743c9afa9792cf20d75995e134e.png' }}
                         ></Image>
                         <Text style={styles.item_tren_text}>Colagen</Text>
                     </View>
@@ -122,31 +142,31 @@ const Search = () => {
                 <View style={styles.list_catogary}>
                     <View style={styles.item_catogary}>
                         <Image style={styles.image_catogary}
-                               source={{uri: 'https://salt.tikicdn.com/ts/upload/0e/07/78/ee828743c9afa9792cf20d75995e134e.png'}}
+                            source={{ uri: 'https://salt.tikicdn.com/ts/upload/0e/07/78/ee828743c9afa9792cf20d75995e134e.png' }}
                         ></Image>
                         <Text style={styles.name_catogary}>Giày nike</Text>
                     </View>
                     <View style={styles.item_catogary}>
                         <Image style={styles.image_catogary}
-                               source={{uri: 'https://salt.tikicdn.com/ts/upload/0e/07/78/ee828743c9afa9792cf20d75995e134e.png'}}
+                            source={{ uri: 'https://salt.tikicdn.com/ts/upload/0e/07/78/ee828743c9afa9792cf20d75995e134e.png' }}
                         ></Image>
                         <Text style={styles.name_catogary}>Giày nike</Text>
                     </View>
                     <View style={styles.item_catogary}>
                         <Image style={styles.image_catogary}
-                               source={{uri: 'https://salt.tikicdn.com/ts/upload/0e/07/78/ee828743c9afa9792cf20d75995e134e.png'}}
+                            source={{ uri: 'https://salt.tikicdn.com/ts/upload/0e/07/78/ee828743c9afa9792cf20d75995e134e.png' }}
                         ></Image>
                         <Text style={styles.name_catogary}>Giày nike</Text>
                     </View>
                     <View style={styles.item_catogary}>
                         <Image style={styles.image_catogary}
-                               source={{uri: 'https://salt.tikicdn.com/ts/upload/0e/07/78/ee828743c9afa9792cf20d75995e134e.png'}}
+                            source={{ uri: 'https://salt.tikicdn.com/ts/upload/0e/07/78/ee828743c9afa9792cf20d75995e134e.png' }}
                         ></Image>
                         <Text style={styles.name_catogary}>Giày nike</Text>
                     </View>
                     <View style={styles.item_catogary}>
                         <Image style={styles.image_catogary}
-                               source={{uri: 'https://salt.tikicdn.com/ts/upload/0e/07/78/ee828743c9afa9792cf20d75995e134e.png'}}
+                            source={{ uri: 'https://salt.tikicdn.com/ts/upload/0e/07/78/ee828743c9afa9792cf20d75995e134e.png' }}
                         ></Image>
                         <Text style={styles.name_catogary}>Giày nike</Text>
                     </View>
@@ -156,7 +176,7 @@ const Search = () => {
 
     );
 };
-const {width} = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -267,6 +287,11 @@ const styles = StyleSheet.create({
         borderRadius: 50,
         fontSize: 30
     },
+    icon_mic: {
+        padding: 1,
+        borderRadius: 50,
+        fontSize: 30
+    },
     headerSearch: {
         paddingVertical: 10,
         marginTop: 30,
@@ -283,7 +308,7 @@ const styles = StyleSheet.create({
         margin: 0,
         marginLeft: 8,
         // outlineWidth: 0, // Tương đương với outline: 0px;
-        width: '100%',
+        width: '77%',
         padding: 0,
         fontWeight: '400', // Tương đương với font-weight: 400;
         fontSize: 14,

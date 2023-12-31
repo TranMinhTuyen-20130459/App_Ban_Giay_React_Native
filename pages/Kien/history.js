@@ -1,33 +1,84 @@
-import {useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 
-import React, {useState, useEffect} from 'react';
-import {View, Text, FlatList, StyleSheet, ScrollView, TouchableOpacity, TextInput} from 'react-native';
+import React, {useState, useEffect, useRef} from 'react';
+import {View, Text, FlatList, StyleSheet, ScrollView, TouchableOpacity, TextInput, Alert} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {API_GET_PATHS} from "../../common/PathApi";
-
+import firebase from 'firebase/compat/app';
+import { FirebaseRecaptchaVerifierModal } from 'expo-firebase-recaptcha';
+import { firebaseConfig } from '../../config';
+import { WebView } from 'react-native-webview';
+import {useRoute} from "@react-navigation/native";
 const HistorySell = () => {
     const [purchaseHistory, setPurchaseHistory] = useState([]);
     const [filteredHistory, setFilteredHistory] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
-
+    const [checked, setChecked] = useState(false);
+    const[code, setCode] = useState("")
+    const[verificationId ,setVerificationId] = useState(null)
+    const recaptchaVerifier = useRef(null)
     const navigation = useNavigation();
+    const route = useRoute();
+    const {checkVerifier} = route.params || false;
+    const {phone} = route.params || '';
+    console.log(checkVerifier)
+    const sendVerification = ()=>{
+        if(searchQuery.startsWith(0)){
+          setSearchQuery(searchQuery.substring(1))  
+        }
+        console.log(searchQuery)
+        const phoneProvider = new firebase.auth.PhoneAuthProvider();
+        phoneProvider.verifyPhoneNumber("+84"+searchQuery,recaptchaVerifier.current)
+        .then(verificationId => {
+            // Save the verificationId for later use
+            setVerificationId(verificationId);
+            navigation.navigate('otp', {
+                      phone: "+84"+searchQuery,
+                      verification: verificationId, 
+            })
+          })
+          .catch(error => {
+            Alert.alert(
+                'Định dạnh không hợp lệ'
+            )
+          });
+        // .then((setVerificationId) => {
+                  
+        //     // Navigate to OTP screen with the verified phone number
+           
+        //   })         
+    }
+    const confirmCode = ()=>{
+        const credential = firebase.auth.PhoneAuthProvider.credential(
+            verificationId,
+            code
+        );
+        firebase.auth().signInWithCredential(credential)
+        .then(()=>{
+            setCode("")
 
+        })
+        .catch((err)=>{
+            alert(err)
+        })
+        Alert.alert(
+            'Susses'
+        )
+    }
     // Lấy dữ liệu từ API khi mở ứng dụng
     useEffect(() => {
-        fetchData(); // Fetch data with default phone number
-    }, []);
-
-    // Tìm kiếm khi số điện thoại thay đổi
-    useEffect(() => {
-        fetchData(searchQuery);
-    }, [searchQuery]);
-
+        console.log(checkVerifier)
+        if(checkVerifier){
+            fetchData(); // Fetch data with default phone number
+        }
+     
+    }, [checkVerifier || phone]);
     // Hàm lấy dữ liệu từ API dựa trên số điện thoại
     const fetchData = async () => {
         try {
             const response = await fetch(
-                API_GET_PATHS.lich_su_mua_hang + `phoneNumber=${searchQuery}&page=1&pageSize=9`
+                API_GET_PATHS.lich_su_mua_hang + `phoneNumber=${phone}&page=1&pageSize=100`
             );
             const jsonData = await response.json();
             if (jsonData.succeeded) {
@@ -66,6 +117,12 @@ const HistorySell = () => {
                     <Text style={styles.purchaseText}>
                         Thời gian: <Text style={styles.purchaseValue}>{item.time_order}</Text>
                     </Text>
+                    <Text style={styles.purchaseText}>
+                        Phương thức thanh toán: <Text style={styles.purchaseValue}>{item.payment.name_method_payment}</Text>
+                    </Text>
+                    <Text style={[styles.purchaseValue]}>
+                        Đã thanh toán : {item.payment.id_status_payment > 2 ? "✔️" : "❌"}
+                    </Text>
                 </View>
             </View>
             <View style={styles.buttonsContainer}>
@@ -93,15 +150,22 @@ const HistorySell = () => {
     return (
 
         <View>
+            <FirebaseRecaptchaVerifierModal 
+            ref={recaptchaVerifier}
+            firebaseConfig={firebaseConfig}
+            />
             <View style={styles.searchContainer}>
+                <Text>+84</Text>
                 <TextInput
                     style={styles.searchInput}
                     placeholder="Nhập số điện thoại để tìm kiếm đơn hàng của bạn ..."
                     value={searchQuery}
                     onChangeText={text => setSearchQuery(text)}
                 />
-                <Icon name="search" size={20} color="#333"/>
+                <Icon name="search" size={20} color="#333" onPress={sendVerification}/>
+
             </View>
+
 
             {isLoading ? (
                 <Text>Đang tải...</Text>
