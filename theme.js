@@ -17,7 +17,19 @@ export const colors = {
 
   borderGray: "rgb(235, 235, 240)",
   grayLight: "rgb(128, 128, 137)",
+
+  purple: "#8a2be2",
+  pink: "#ff69b4",
+  teal: "#008080",
+  lavender: "#e6e6fa",
+  gold: "#ffd700",
+  salmon: "#fa8072",
+  cyan: "#00ffff",
+  darkSlateGray: "#2f4f4f",
+  chocolate: "#d2691e",
+  deepSkyBlue: "#00bfff",
 };
+
 
 export const spacing = {
   small: 8,
