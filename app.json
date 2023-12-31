@@ -6,6 +6,7 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
+    "accessRights": "INTERNET",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -21,10 +22,22 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.huynhtham.App_Ban_Hang_User",
+     "config": {
+        "googleMaps": {
+      "apiKey": "AIzaSyCmppXAtr_MzNx_sCbDwK9fARePuf7N6qs"
+       }
+     }
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "e9de4f79-ab83-422c-b6ec-b0e542c09f50"
+      }
     }
+   
   }
 }

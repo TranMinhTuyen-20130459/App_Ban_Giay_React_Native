@@ -7,7 +7,7 @@ export const styles = StyleSheet.create({
         flex: 1
     },
     content: {
-        flex: 1
+        flex: 1,
     },
     mainContent: {
         backgroundColor: 'white',
@@ -47,6 +47,12 @@ export const styles = StyleSheet.create({
         padding: 20
     },
     drop_down:{
-        backgroundColor: 'rgba(230, 236, 243, 1)'
+        backgroundColor: 'rgba(230, 236, 243, 1)',
+        // justifyContent: 'flex-start',
+
     }
+    ,scroll:{
+        flex: 1,
+        // width: '100%',
+      }
 })

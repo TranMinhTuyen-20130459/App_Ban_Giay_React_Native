@@ -25,8 +25,11 @@ import {
 } from "../../util/CheckValid";
 import { fetchDataMethodGET } from "../../util/CallApi";
 
+import {MapScreen} from"../OrderAddress/MapScreen";
+import { useSelector } from 'react-redux';
+
 export default function OrderAddressScreen() {
-  const dispatch = useDispatch();
+const dispatch = useDispatch();
   const navigation = useNavigation();
 
   const [name_customer, setNameCustomer] = useState("");
@@ -116,7 +119,9 @@ export default function OrderAddressScreen() {
       style={{ flex: 1 }}
     >
       <View style={styles.container}>
-        <View style={styles.content}>
+
+
+      <View style={styles.content}>
           {/*<View style={styles.label_name_customer}>*/}
           {/*    <Text>{name_customer}</Text>*/}
           {/*    <Text>{phone_number}</Text>*/}
@@ -129,7 +134,8 @@ export default function OrderAddressScreen() {
           {/*    <Text>{ward_name}</Text>*/}
           {/*</View>*/}
 
-          <MainComponent
+        <MainComponent
+          
             setNameCustomer={setNameCustomer}
             setPhoneNumber={setPhoneNumber}
             setAddressDetail={setAddressDetail}
@@ -160,10 +166,13 @@ export default function OrderAddressScreen() {
             setErrorProvince={setErrorProvince}
             setErrorDistrict={setErrorDistrict}
             setErrorWard={setErrorWard}
+            
           />
-        </View>
-        <Footer handleClickBtConfirm={handleClickBtConfirm} />
       </View>
+        <Footer handleClickBtConfirm={handleClickBtConfirm} />
+
+      </View>
+      
     </KeyboardAvoidingView>
   );
 }
@@ -288,7 +297,9 @@ function MainComponent({
   }, [district_id]);
 
   return (
+
     <View style={styles.mainContent}>
+
       {/*<View style={{marginBottom: 10}}>*/}
       {/*    <Text style={{fontSize: 16}}>Nhập địa chỉ mới</Text>*/}
       {/*</View>*/}
@@ -307,7 +318,7 @@ function MainComponent({
         <Text style={styles.fontSizeText}>Tỉnh/ Thành phố</Text>
       </View>
       <View>
-        <DropDownPicker
+        <DropDownPicker   nestedScrollEnabled={false} 
           placeholder="Chọn Tỉnh/Thành Phố"
           open={isOpenDropDownProvince}
           setOpen={(value) => {
@@ -397,6 +408,7 @@ function MainComponent({
       {errorAddressDetail && (
         <Text style={{ color: "red" }}>{errorAddressDetail}</Text>
       )}
+
     </View>
   );
 }

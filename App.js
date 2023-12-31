@@ -1,12 +1,12 @@
 import * as React from "react";
-import {useEffect} from "react";
-import {Provider} from "react-redux";
+import { useEffect } from "react";
+import { Provider } from "react-redux";
 import store from "./redux/store";
-import {NavigationContainer} from "@react-navigation/native";
-import {createNativeStackNavigator} from "@react-navigation/native-stack";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import SettingScreen from "./pages/Tuyen/screens/Orther/SettingScreen";
 import CartScreen from "./pages/Tuyen/screens/Cart/CartScreen";
-import {colors} from "./theme";
+import { colors } from "./theme";
 
 import {
     getCartFromAsyncStorage,
@@ -15,14 +15,14 @@ import {
     saveHistoryViewToAsyncStorage
 } from "./utils/LocalStorage";
 
-import {addCart} from "./redux/slices/CartsSlice";
+import { addCart } from "./redux/slices/CartsSlice";
 import OrderConfirmScreen from "./pages/Tuyen/screens/OrderConfirm/OrderConfirmScreen";
 import MainContainer from "./pages/MainContainer";
 import OrderAddressScreen from "./pages/Tuyen/screens/OrderAddress/OrderAddressScreen";
-import {ProducDetail} from "./pages/An/ProductDetail";
-import {SelectSize} from "./pages/An/SelectSize";
+import { ProducDetail } from "./pages/An/ProductDetail";
+import { SelectSize } from "./pages/An/SelectSize";
 import ProductReview from "./pages/An/ProductReview";
-import {getMethodPaymentFromAsyncStorage, setSelectedPayment} from "./redux/slices/PaymentSlice";
+import { getMethodPaymentFromAsyncStorage, setSelectedPayment } from "./redux/slices/PaymentSlice";
 import {
     getInfoAddressFromAsyncStorage,
     setAddress,
@@ -32,9 +32,11 @@ import Search from "./components/Search";
 import ResultSearch from "./components/ResultSearch";
 import HistorySell from "./pages/Kien/history";
 import HistoryViewProduct from "./pages/Kien/HistoryViewProduct";
-import {AppState} from "react-native";
-import {addHistory} from "./redux/slices/HistoryView";
-
+import { AppState,TouchableOpacity } from "react-native";
+import { addHistory } from "./redux/slices/HistoryView";
+import GoogleMapsScreen from "./pages/Tuyen/screens/OrderAddress/GoogleMapsScreen";
+import { useNavigation } from '@react-navigation/native';
+import { FontAwesome } from '@expo/vector-icons';
 function App() {
     const Stack = createNativeStackNavigator();
 
@@ -103,6 +105,29 @@ function App() {
 
         fetchData();
     }, []);
+
+    const OrderAddressScreenOptions = () => {
+        const navigation = useNavigation();
+    
+        return {
+          title: 'Địa chỉ giao hàng',
+          headerTitleAlign: 'center',
+          headerStyle: {
+            backgroundColor: colors.blueRoot,
+          },
+          headerTintColor: 'white',
+          headerRight: () => (
+            <TouchableOpacity
+              style={{ marginRight: 15 }}
+              onPress={() => {
+                navigation.navigate('Google map');
+              }}
+            >
+              <FontAwesome name="map-marker" size={24} color="white" />
+            </TouchableOpacity>
+          ),
+        };
+      };
     return (
         <Provider store={store}>
             <NavigationContainer>
@@ -110,19 +135,19 @@ function App() {
                     <Stack.Screen
                         name="Main"
                         component={MainContainer}
-                        options={{headerShown: false}}
+                        options={{ headerShown: false }}
                     />
                     {/* cấu hình các đường dẫn qua các trang khác */}
-                    <Stack.Screen name="Setting" component={SettingScreen}/>
+                    <Stack.Screen name="Setting" component={SettingScreen} />
                     <Stack.Screen name="Cart" component={CartScreen}
-                                  options={{
-                                      title: 'Giỏ hàng',
-                                      headerTitleAlign: 'center',
-                                      headerStyle: {
-                                          backgroundColor: colors.blueRoot,
-                                      },
-                                      headerTintColor: 'white',
-                                  }}/>
+                        options={{
+                            title: 'Giỏ hàng',
+                            headerTitleAlign: 'center',
+                            headerStyle: {
+                                backgroundColor: colors.blueRoot,
+                            },
+                            headerTintColor: 'white',
+                        }} />
 
                     <Stack.Screen
                         name="ProductDetail"
@@ -174,18 +199,18 @@ function App() {
                         }}
                     />
 
-                    <Stack.Screen
-                        name="OrderAddress"
-                        component={OrderAddressScreen}
-                        options={{
-                            title: "Địa chỉ giao hàng",
-                            headerTitleAlign: "center",
-                            headerStyle: {
-                                backgroundColor: colors.blueRoot,
-                            },
-                            headerTintColor: "white",
-                        }}
-                    />
+<Stack.Screen
+            name="OrderAddress"
+            component={OrderAddressScreen}
+            options={OrderAddressScreenOptions}
+          />
+          <Stack.Screen
+            name="Google map"
+            component={GoogleMapsScreen}
+            options={{
+              headerTitleAlign: 'center',
+            }}
+          />
                     <Stack.Screen
                         name="Search"
                         component={Search}
@@ -201,32 +226,32 @@ function App() {
                         }}
                     />
                     <Stack.Screen name="HistoryViewProduct" component={HistoryViewProduct}
-                                  options={{
-                                      title: 'Sản phẩm đã xem',
-                                      headerTitleAlign: 'center',
-                                      headerStyle: {
-                                          backgroundColor: colors.blueRoot,
-                                      },
-                                      headerTintColor: 'white',
-                                  }}/>
+                        options={{
+                            title: 'Sản phẩm đã xem',
+                            headerTitleAlign: 'center',
+                            headerStyle: {
+                                backgroundColor: colors.blueRoot,
+                            },
+                            headerTintColor: 'white',
+                        }} />
                     <Stack.Screen name="HistorySell" component={HistorySell}
-                                  options={{
-                                      title: 'Lịch sử mua hàng ',
-                                      headerTitleAlign: 'center',
-                                      headerStyle: {
-                                          backgroundColor: colors.blueRoot,
-                                      },
-                                      headerTintColor: 'white',
-                                  }}/>
+                        options={{
+                            title: 'Lịch sử mua hàng ',
+                            headerTitleAlign: 'center',
+                            headerStyle: {
+                                backgroundColor: colors.blueRoot,
+                            },
+                            headerTintColor: 'white',
+                        }} />
                     <Stack.Screen name="OrderDetail" component={OrderDetailsScreen}
-                                  options={{
-                                      title: 'Chi tiết đơn hàng',
-                                      headerTitleAlign: 'center',
-                                      headerStyle: {
-                                          backgroundColor: colors.blueRoot,
-                                      },
-                                      headerTintColor: 'white',
-                                  }}/>
+                        options={{
+                            title: 'Chi tiết đơn hàng',
+                            headerTitleAlign: 'center',
+                            headerStyle: {
+                                backgroundColor: colors.blueRoot,
+                            },
+                            headerTintColor: 'white',
+                        }} />
 
 
                 </Stack.Navigator>
