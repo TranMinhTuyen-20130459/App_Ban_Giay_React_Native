@@ -7,7 +7,6 @@ import HomeScreen from './Tham/HomeScreen';
 import CategoryScreen from './Tham/CategoryScreen';
 import AccountScreen from './Tuyen/screens/Orther/AccountScreen';
 import ChatBotScreen from "./Tuyen/screens/ChatBot/ChatBotScreen";
-import MessageScreen from "./Tuyen/screens/Orther/MessageScreen";
 
 const homeName = "Trang chủ";
 const categoryName = "Danh mục";

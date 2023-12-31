@@ -1,12 +1,12 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Alert, Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View} from 'react-native';
+import {Alert, Image, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {heightPercentageToDP as hp, widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import {apiCall} from '../../chat-bot/OpenAI';
-import {Features} from './components/Features';
-import {StyleSheet} from 'react-native'
-
+import Tts from 'react-native-tts';
+import Voice from '@react-native-community/voice';
 
 const ChatBotScreen = () => {
+
     const [result, setResult] = useState('');
     const [recording, setRecording] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -14,77 +14,129 @@ const ChatBotScreen = () => {
     const [speaking, setSpeaking] = useState(false);
     const scrollViewRef = useRef();
 
-    const speechStartHandler = (e) => {
+    const speechStartHandler = e => {
         console.log('speech start event', e);
     };
-    const speechEndHandler = (e) => {
+
+    const speechEndHandler = e => {
         setRecording(false);
         console.log('speech stop event', e);
     };
-    const speechResultsHandler = (e) => {
+
+    const speechResultsHandler = e => {
         console.log('speech event: ', e);
         const text = e.value[0];
+        console.log('Result: ', text)
         setResult(text);
     };
 
-    const speechErrorHandler = (e) => {
+    const speechErrorHandler = e => {
         console.log('speech error: ', e);
-    };
+    }
 
     const startRecording = async () => {
-
+        setRecording(true);
+        await Tts.stop();
+        try {
+             await Voice.start('en-US');
+        } catch (error) {
+            console.log('error', error);
+        }
     };
+
     const stopRecording = async () => {
-
+        try {
+            await Voice.stop();
+            setRecording(false);
+            await fetchResponse();
+        } catch (error) {
+            console.log('error', error);
+        }
     };
-    const clear = () => {
 
+    const clear = async () => {
+        await Tts.stop();
+        setSpeaking(false);
+        setLoading(false);
+        setMessages([]);
     };
 
     const fetchResponse = async () => {
         if (result.trim().length > 0) {
+
             setLoading(true);
             let newMessages = [...messages];
             newMessages.push({role: 'user', content: result.trim()});
             setMessages([...newMessages]);
 
-            // Scroll to the bottom of the view
+            // scroll to the bottom of the view
             updateScrollView();
 
-            // Fetching response from chatGPT with our prompt and old messages
-            apiCall(result.trim(), newMessages).then((res) => {
+            // fetching response from chatGPT with our prompt and old messages
+            apiCall(result.trim(), newMessages).then(res => {
+
                 console.log('got api data');
+
                 setLoading(false);
                 if (res.success) {
                     setMessages([...res.data]);
                     setResult('');
                     updateScrollView();
 
-                    // Now play the response to the user
-                    startTextToSpeech(res.data[res.data.length - 1]);
+                    // now play the response to user
+                    startTextToSpeach(res.data[res.data.length - 1]);
+
                 } else {
                     Alert.alert('Error', res.msg);
                 }
-            });
+
+            })
         }
-    };
+    }
 
     const updateScrollView = () => {
         setTimeout(() => {
             scrollViewRef?.current?.scrollToEnd({animated: true});
-        }, 200);
-    };
+        }, 200)
+    }
 
-    const startTextToSpeech = (message) => {
-
-    };
+    const startTextToSpeach = message => {
+        if (!message.content.includes('https')) {
+            setSpeaking(true);
+            // playing response with the voice id and voice speed
+            Tts.speak(message.content, {
+                iosVoiceId: 'com.apple.ttsbundle.Samantha-compact',
+                rate: 0.5,
+            });
+        }
+    }
 
     const stopSpeaking = () => {
-
-    };
+        Tts.stop().then(r => console.log('stop', r));
+        setSpeaking(false);
+    }
 
     useEffect(() => {
 
+        // voice handler events
+        Voice.onSpeechStart = speechStartHandler;
+        Voice.onSpeechEnd = speechEndHandler;
+        Voice.onSpeechResults = speechResultsHandler;
+        Voice.onSpeechError = speechErrorHandler;
+
+        // text to speech events
+        // Tts.setDefaultLanguage('vi-VN').then(r => console.log('set default language', r));
+        Tts.addEventListener('tts-start', event => console.log('start', event));
+        Tts.addEventListener('tts-finish', event => {
+            console.log('finish', event);
+            setSpeaking(false)
+        });
+        Tts.addEventListener('tts-cancel', event => console.log('cancel', event));
+
+        return () => {
+            // destroy the voice instance after component unmounts
+            Voice.destroy().then(Voice.removeAllListeners);
+        };
     }, []);
 
     return (
