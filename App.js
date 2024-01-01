@@ -191,21 +191,18 @@ function App() {
                     <Stack.Screen
                         name="OrderAddress"
                         component={OrderAddressScreen}
+                    />
+
+                    <Stack.Screen
+                        name="GoogleMap"
+                        component={GoogleMapsScreen}
                         options={{
-                            title: "Địa chỉ giao hàng",
-                            headerTitleAlign: "center",
+                            title: 'Google Map',
+                            headerTitleAlign: 'center',
                             headerStyle: {
                                 backgroundColor: colors.blueRoot,
                             },
                             headerTintColor: "white",
-                        }}
-                    />
-
-                    <Stack.Screen
-                        name="Google map"
-                        component={GoogleMapsScreen}
-                        options={{
-                            headerTitleAlign: 'center',
                         }}
                     />
 
