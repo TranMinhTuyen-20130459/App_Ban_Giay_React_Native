@@ -1,36 +1,41 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
     Alert,
     Image,
+    Keyboard,
     SafeAreaView,
     ScrollView,
     StyleSheet,
     Text,
     TextInput,
     TouchableOpacity,
-    View
+    View,
 } from 'react-native';
 import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import {apiCall} from './api/OpenAI';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {colors} from "../../../../theme";
+import {colors} from '../../../../theme';
 
 const initChatMessages = {
     role: 'assistant',
-    content: 'Xin chào! Mình là trợ lý AI của Tiki Kun. Bạn cần mình giúp gì?'
-}
-const ChatBotScreen = () => {
+    content: 'Xin chào! Mình là trợ lý AI của Tiki Kun. Bạn cần mình giúp gì?',
+};
+
+const ChatBotScreen = ({route}) => {
+
     const [isWaitingResponse, setIsWaitingResponse] = useState(false);
     const [messages, setMessages] = useState([initChatMessages]);
     const [inputText, setInputText] = useState('');
     const scrollViewRef = useRef();
 
+    // Xóa đi lịch sử đoạn Chat
     const clear = async () => {
         setInputText('');
         setMessages([initChatMessages]);
         setIsWaitingResponse(false);
     };
 
+    // Nhận phản hồi từ ChatBot
     const fetchResponse = async () => {
         const requestData = inputText.trim();
 
@@ -40,19 +45,22 @@ const ChatBotScreen = () => {
             newMessages.push({role: 'user', content: requestData});
             setMessages([...newMessages]);
 
-            // scroll to the bottom of the view
+            // Scroll to the bottom of the view
             updateScrollView();
 
             setInputText(''); // Clear input after sending
 
-            // fetching response from chatGPT with our prompt and old messages
+            // Fetching response from chatGPT with our prompt and old messages
             apiCall(requestData, newMessages).then((res) => {
                 setIsWaitingResponse(false);
                 if (res.success) {
                     setMessages([...res.data]);
                     updateScrollView();
                 } else {
-                    Alert.alert('Thông báo', 'Hệ thống hiện tại đang bận, vui lòng thử lại sau!');
+                    Alert.alert(
+                        'Thông báo',
+                        'Hệ thống hiện tại đang bận, vui lòng thử lại sau!'
+                    );
                 }
             });
         }
@@ -64,28 +72,58 @@ const ChatBotScreen = () => {
         }, 200);
     };
 
+    const {setKeyboardVisible} = route.params;
+
+    // Dùng để ẩn/hiện thanh Tab Bar tại MainContainer
+    useEffect(() => {
+        const keyboardDidShowListener = Keyboard.addListener(
+            "keyboardDidShow",
+            () => {
+                // console.log('keyboardDidShow');
+                setKeyboardVisible(true);
+            }
+        );
+        const keyboardDidHideListener = Keyboard.addListener(
+            "keyboardDidHide",
+            () => {
+                // console.log('keyboardDidHide');
+                setKeyboardVisible(false);
+            }
+        );
+
+        return () => {
+            keyboardDidShowListener.remove();
+            keyboardDidHideListener.remove();
+        };
+    }, [setKeyboardVisible]);
+
     return (
         <SafeAreaView style={styles.safeAreaView}>
             <View style={styles.container}>
-
-
                 <View style={styles.botIconContainer}>
-                    <Image source={require('../../images/bot.png')} style={styles.botIcon}/>
+                    <Image
+                        source={require('../../images/bot.png')}
+                        style={styles.botIcon}
+                    />
                 </View>
 
                 <View style={styles.messageHistoryContainer}>
-                    <ScrollView ref={scrollViewRef} style={styles.messagesScrollView}
-                                showsVerticalScrollIndicator={false}>
+                    <ScrollView
+                        ref={scrollViewRef}
+                        style={styles.messagesScrollView}
+                        showsVerticalScrollIndicator={false}
+                        keyboardDismissMode="on-drag" // Automatically hide keyboard when scrolling ScrollView
+                        keyboardShouldPersistTaps="handled" // Handle taps on other components to hide keyboard
+                    >
                         {messages.map((message, index) => {
                             if (message.role === 'assistant') {
                                 return (
-                                    <View style={{flexDirection: 'row'}}>
-                                        <Image source={require('../../images/bot.png')} style={{
-                                            height: 45,
-                                            width: 45,
-                                            marginRight: 10
-                                        }}/>
-                                        <View key={index} style={styles.chatResponseContainer}>
+                                    <View style={{flexDirection: 'row'}} key={index}>
+                                        <Image
+                                            source={require('../../images/bot.png')}
+                                            style={{height: 45, width: 45, marginRight: 10}}
+                                        />
+                                        <View style={styles.chatResponseContainer}>
                                             {renderContentWithImage(message.content)}
                                         </View>
                                     </View>
@@ -94,7 +132,9 @@ const ChatBotScreen = () => {
                                 return (
                                     <View key={index} style={styles.userInputContainer}>
                                         <View style={styles.userInput}>
-                                            <Text style={styles.userInputText}>{message.content}</Text>
+                                            <Text style={styles.userInputText}>
+                                                {message.content}
+                                            </Text>
                                         </View>
                                     </View>
                                 );
@@ -103,11 +143,10 @@ const ChatBotScreen = () => {
 
                         {isWaitingResponse && (
                             <View style={{flexDirection: 'row'}}>
-                                <Image source={require('../../images/bot.png')} style={{
-                                    height: 45,
-                                    width: 45,
-                                    marginRight: 10
-                                }}/>
+                                <Image
+                                    source={require('../../images/bot.png')}
+                                    style={{height: 45, width: 45, marginRight: 10}}
+                                />
                                 <View style={styles.chatResponseContainer}>
                                     <Text style={styles.chatResponseText}>...</Text>
                                 </View>
@@ -116,7 +155,6 @@ const ChatBotScreen = () => {
                     </ScrollView>
 
                     <View style={styles.inputContainer}>
-
                         <View style={styles.trashIconContainer}>
                             <TouchableOpacity onPress={clear}>
                                 <Icon name="trash" size={25} color={colors.redHeart}/>
@@ -130,10 +168,12 @@ const ChatBotScreen = () => {
                             onChangeText={(text) => setInputText(text)}
                         />
 
-                        <TouchableOpacity style={styles.sendButton} onPress={fetchResponse}>
+                        <TouchableOpacity
+                            style={styles.sendButton}
+                            onPress={fetchResponse}
+                        >
                             <Icon name="arrow-right" size={18} color="white"/>
                         </TouchableOpacity>
-
                     </View>
                 </View>
             </View>
@@ -148,16 +188,19 @@ const renderContentWithImage = (content) => {
     // Split the content by image URLs
     const parts = content.split(imageUrlRegex);
 
-    // console.log('Content response: ', parts);
-
     return parts.map((part, index) => {
         if (index % 2 === 0) {
             // Text part
             return <Text key={index}>{part}</Text>;
         } else {
-            // console.log('Image part: ', part);
             // Image part
-            return <Image key={index} source={{uri: part}} style={{height: 45, width: 45}}/>;
+            return (
+                <Image
+                    key={index}
+                    source={{uri: part}}
+                    style={{height: 45, width: 45}}
+                />
+            );
         }
     });
 };
@@ -219,7 +262,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         marginBottom: 15,
-        marginTop: 15
+        marginTop: 15,
     },
     inputText: {
         flex: 1,
@@ -241,7 +284,7 @@ const styles = StyleSheet.create({
     },
     trashIconContainer: {
         marginHorizontal: 10,
-    }
+    },
 });
 
 export default ChatBotScreen;
