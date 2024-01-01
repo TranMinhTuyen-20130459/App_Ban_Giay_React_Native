@@ -1,17 +1,47 @@
 import axios from 'axios';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
+import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
 import {parseAddress} from "../../util/Utils";
+import * as Location from 'expo-location';
 
 export const MapComponent = ({onUpdateAddress}) => {
 
-    const [selectedLocation, setSelectedLocation] = useState({latitude: 10.7769, longitude: 106.7009});
+    const [selectedLocation, setSelectedLocation] = useState(null);
+
+    useEffect(() => {
+        (async () => {
+            try {
+                // Yêu cầu quyền truy cập vị trí
+                const {status} = await Location.requestForegroundPermissionsAsync();
+
+                if (status !== 'granted') {
+                    console.error('Permission to access location was denied');
+                    return;
+                }
+
+                console.log('Permission GPS granted');
+
+                // Lấy vị trí hiện tại
+                const currentLocation = await Location.getCurrentPositionAsync({});
+                const {latitude, longitude} = currentLocation.coords;
+
+                console.log('Current Location', currentLocation.coords)
+
+                // Cập nhật vị trí hiện tại trong state
+                setSelectedLocation({latitude, longitude});
+
+            } catch (error) {
+                console.error('Error getting current location:', error.message);
+            }
+        })();
+    }, []);
 
     // Xử lý khi người dùng nhấn vào bản đồ chọn vị trí
     const handleMapPress = async ({nativeEvent: {coordinate}}) => {
 
         setSelectedLocation(coordinate);
+
         try {
 
             const response = await axios.get(
@@ -46,19 +76,23 @@ export const MapComponent = ({onUpdateAddress}) => {
             <MapView
                 style={styles.map}
                 provider={PROVIDER_GOOGLE}
-                initialRegion={{latitudeDelta: 0.01, longitudeDelta: 0.01, ...selectedLocation}}
-                onPress={handleMapPress}>
-
-                {/*{selectedLocation && address && (*/}
+                region={{
+                    latitudeDelta: 0.01,
+                    longitudeDelta: 0.01,
+                    ...(selectedLocation || {latitude: 10.7769, longitude: 106.7009}),
+                }}
+                onPress={handleMapPress}
+            >
+                {/*{selectedLocation && (*/}
                 {/*    <Marker*/}
                 {/*        coordinate={selectedLocation}*/}
-                {/*        title={address.formattedAddress}*/}
+                {/*        title="Selected Location"*/}
+                {/*        description="This is the selected location"*/}
                 {/*    />*/}
                 {/*)}*/}
-
             </MapView>
         </View>
-    );
+    )
 };
 
 const styles = StyleSheet.create({
