@@ -20,7 +20,7 @@ const initChatMessages = {
     content: 'Xin chào! Mình là trợ lý AI của Tiki Kun. Bạn cần mình giúp gì?'
 }
 const ChatBotScreen = () => {
-    const [loading, setLoading] = useState(false);
+    const [isWaitingResponse, setIsWaitingResponse] = useState(false);
     const [messages, setMessages] = useState([initChatMessages]);
     const [inputText, setInputText] = useState('');
     const scrollViewRef = useRef();
@@ -28,14 +28,14 @@ const ChatBotScreen = () => {
     const clear = async () => {
         setInputText('');
         setMessages([initChatMessages]);
-        setLoading(false);
+        setIsWaitingResponse(false);
     };
 
     const fetchResponse = async () => {
         const requestData = inputText.trim();
 
         if (requestData.length > 0) {
-            setLoading(true);
+            setIsWaitingResponse(true);
             let newMessages = [...messages];
             newMessages.push({role: 'user', content: requestData});
             setMessages([...newMessages]);
@@ -47,12 +47,12 @@ const ChatBotScreen = () => {
 
             // fetching response from chatGPT with our prompt and old messages
             apiCall(requestData, newMessages).then((res) => {
-                setLoading(false);
+                setIsWaitingResponse(false);
                 if (res.success) {
                     setMessages([...res.data]);
                     updateScrollView();
                 } else {
-                    Alert.alert('Error', res.msg);
+                    Alert.alert('Thông báo', 'Hệ thống hiện tại đang bận, vui lòng thử lại sau!');
                 }
             });
         }
@@ -86,7 +86,7 @@ const ChatBotScreen = () => {
                                             marginRight: 10
                                         }}/>
                                         <View key={index} style={styles.chatResponseContainer}>
-                                            <Text style={styles.chatResponseText}>{message.content}</Text>
+                                            {renderContentWithImage(message.content)}
                                         </View>
                                     </View>
                                 );
@@ -100,13 +100,26 @@ const ChatBotScreen = () => {
                                 );
                             }
                         })}
+
+                        {isWaitingResponse && (
+                            <View style={{flexDirection: 'row'}}>
+                                <Image source={require('../../images/bot.png')} style={{
+                                    height: 45,
+                                    width: 45,
+                                    marginRight: 10
+                                }}/>
+                                <View style={styles.chatResponseContainer}>
+                                    <Text style={styles.chatResponseText}>...</Text>
+                                </View>
+                            </View>
+                        )}
                     </ScrollView>
 
                     <View style={styles.inputContainer}>
 
                         <View style={styles.trashIconContainer}>
                             <TouchableOpacity onPress={clear}>
-                                <Icon name="trash" size={25} color={colors.redHeart} />
+                                <Icon name="trash" size={25} color={colors.redHeart}/>
                             </TouchableOpacity>
                         </View>
 
@@ -116,14 +129,37 @@ const ChatBotScreen = () => {
                             value={inputText}
                             onChangeText={(text) => setInputText(text)}
                         />
+
                         <TouchableOpacity style={styles.sendButton} onPress={fetchResponse}>
                             <Icon name="arrow-right" size={18} color="white"/>
                         </TouchableOpacity>
+
                     </View>
                 </View>
             </View>
         </SafeAreaView>
     );
+};
+
+const renderContentWithImage = (content) => {
+    // Regular expression to find URLs of images in the content
+    const imageUrlRegex = /(https?:\/\/.*\.(?:png|jpg|jpeg|gif))/i;
+
+    // Split the content by image URLs
+    const parts = content.split(imageUrlRegex);
+
+    // console.log('Content response: ', parts);
+
+    return parts.map((part, index) => {
+        if (index % 2 === 0) {
+            // Text part
+            return <Text key={index}>{part}</Text>;
+        } else {
+            // console.log('Image part: ', part);
+            // Image part
+            return <Image key={index} source={{uri: part}} style={{height: 45, width: 45}}/>;
+        }
+    });
 };
 
 const styles = StyleSheet.create({
