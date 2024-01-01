@@ -1,14 +1,13 @@
-import {useFocusEffect, useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 
-import React, {useState, useEffect, useRef} from 'react';
-import {View, Text, FlatList, StyleSheet, ScrollView, TouchableOpacity, TextInput, Alert} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
+import {Alert, FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {API_GET_PATHS} from "../../common/PathApi";
 import firebase from 'firebase/compat/app';
-import { FirebaseRecaptchaVerifierModal } from 'expo-firebase-recaptcha';
-import { firebaseConfig } from '../../config';
-import { WebView } from 'react-native-webview';
-import {useRoute} from "@react-navigation/native";
+import {FirebaseRecaptchaVerifierModal} from 'expo-firebase-recaptcha';
+import {firebaseConfig} from '../../config';
+
 const HistorySell = () => {
     const [purchaseHistory, setPurchaseHistory] = useState([]);
     const [filteredHistory, setFilteredHistory] = useState([]);

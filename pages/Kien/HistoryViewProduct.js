@@ -1,15 +1,9 @@
-import { useNavigation } from '@react-navigation/native';
-import React, { useEffect, useRef } from 'react';
+import {useNavigation} from '@react-navigation/native';
+import React, {useEffect, useRef, useState} from 'react';
 
-import { View, Text, FlatList, Image, ScrollView, ProgressBarAndroid, TouchableOpacity, StyleSheet, } from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import { colors } from '../../theme';
-import { Dimensions } from 'react-native';
-import { Button } from 'react-native';
+import {Dimensions, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View,} from 'react-native';
+import {useSelector} from 'react-redux';
 
-import { useState } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useSelector } from 'react-redux';
 const HistoryViewProduct = () => {
     const scrollViewRef = useRef();
     const[size,setSize] = useState(10);

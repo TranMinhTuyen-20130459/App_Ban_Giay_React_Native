@@ -1,9 +1,9 @@
-import { useNavigation } from '@react-navigation/native';
-import React, { useEffect, useState } from 'react';
-import { View, Text, Image, ScrollView,ProgressBarAndroid, TouchableOpacity, StyleSheet } from 'react-native';
-import { ProgressBar } from 'react-native-progress';
-import { API_GET_PATHS } from '../../common/PathApi';
-import { colors } from '../../theme';
+import {useNavigation} from '@react-navigation/native';
+import React, {useEffect, useState} from 'react';
+import {Image, ProgressBarAndroid, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {API_GET_PATHS} from '../../common/PathApi';
+import {colors} from '../../theme';
+
 const OrderDetailsScreen = ({ route }) => {
   const id = route.params?.id ;
   const [data, setData] = useState(null);

@@ -1,12 +1,8 @@
-import { autoFocus } from 'deprecated-react-native-prop-types/DeprecatedTextInputPropTypes';
-import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, KeyboardAvoidingView,Alert } from 'react-native';
-import { Button } from 'react-native-elements';
+import React, {useEffect, useRef, useState} from 'react';
+import {Alert, KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import firebase from 'firebase/compat/app';
-import { FirebaseRecaptchaVerifierModal } from 'expo-firebase-recaptcha';
-import { firebaseConfig } from '../../config';
-import { WebView } from 'react-native-webview';
 import {useRoute} from "@react-navigation/native";
+
 const OTPScreen = ({navigation}) => {
   const route = useRoute();
   let textInput = useRef(null)

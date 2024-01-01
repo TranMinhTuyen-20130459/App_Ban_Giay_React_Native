@@ -1,7 +1,7 @@
 import {ActivityIndicator, Alert, Modal, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import Feather from "react-native-vector-icons/Feather";
 import {WebView} from "react-native-webview";
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {StatusPaymentsId} from "./OrderConfirmScreen";
 
 export function PayPalWebView(props) {

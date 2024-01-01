@@ -6,6 +6,7 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
+    "accessRights": "INTERNET",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -22,22 +23,24 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "permissions": [
-        "android.permission.RECORD_AUDIO",
-        "android.permission.MODIFY_AUDIO_SETTINGS"
-      ],
-      "package": "com.tuyen_kun.App_Ban_Hang_User"
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    },
-    "plugins": [
-      [
-        "expo-av",
-        {
-          "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone."
+      "package": "com.tuyen_kun.App_Ban_Hang_User",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyCmppXAtr_MzNx_sCbDwK9fARePuf7N6qs"
         }
-      ]
+      }
+    },
+    "permissions": [
+      "android.permission.RECORD_AUDIO",
+      "android.permission.MODIFY_AUDIO_SETTINGS"
     ]
+  },
+  "web": {
+    "favicon": "./assets/favicon.png"
+  },
+  "extra": {
+    "eas": {
+      "projectId": "e9de4f79-ab83-422c-b6ec-b0e542c09f50"
+    }
   }
 }

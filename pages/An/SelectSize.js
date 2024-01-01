@@ -1,10 +1,9 @@
-import {Image, ScrollView, StyleSheet, Text, View} from "react-native";
+import {ScrollView, StyleSheet, Text, View} from "react-native";
 import {ItemColorClothes} from "../../components/product/ItemColorClothes";
 import {ItemSize} from "../../components/product/ItemSize";
 import {ButtonAdd} from "../../components/product/ButtonAddCart";
 import {useRoute} from "@react-navigation/native";
 import {useState} from "react";
-import {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {addCart} from "../../redux/slices/CartsSlice";
 
