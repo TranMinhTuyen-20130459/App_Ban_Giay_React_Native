@@ -1,7 +1,7 @@
 import {styles} from "./OrderConfirm.styles";
 import {Alert, Image, ScrollView, Text, TouchableOpacity, View} from "react-native";
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {colors} from "../../../../theme";
 import {formatMoney, WINDOW_WIDTH} from "../../../../utils/Utils";
 import {useNavigation} from "@react-navigation/native";

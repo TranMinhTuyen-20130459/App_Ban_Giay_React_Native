@@ -1,13 +1,4 @@
-import {
-    Animated,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
-    ScrollView,
-    ActivityIndicator,
-
-} from "react-native";
+import {ActivityIndicator, Animated, ScrollView, StyleSheet, Text, TouchableOpacity, View,} from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {useEffect, useState} from "react";
 import {HeaderProductDetail} from "../../components/product/HeaderProductDetail";
@@ -21,12 +12,12 @@ import {useDispatch, useSelector} from "react-redux";
 import {useRoute} from "@react-navigation/native";
 import uuidv4 from "uuid/v4";
 import {addOrderProduct, removeAllOrderProduct} from "../../redux/slices/OrderProductSlice";
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {addHistory} from "../../redux/slices/HistoryView";
 import {API_GET_PATHS} from "../../common/PathApi";
-import { addFavories, removeFavories } from "../../redux/slices/Favories";
+import {addFavories, removeFavories} from "../../redux/slices/Favories";
 import Modal from 'react-native-modal';
 import QRCode from 'react-native-qrcode-svg';
+
 const fakeData = [
     {
         quantity_star: 5,

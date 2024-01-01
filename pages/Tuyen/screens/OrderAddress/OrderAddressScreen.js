@@ -1,32 +1,23 @@
-import {
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import {KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity, View,} from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
-import { styles } from "./OrderAddress.styles";
-import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { setAddress } from "../../../../redux/slices/OrderAddressSlice";
-import { colors } from "../../../../theme";
-import { getLabelFromValue } from "../../util/Utils";
-import { useNavigation } from "@react-navigation/native";
+import {styles} from "./OrderAddress.styles";
+import {useEffect, useState} from "react";
+import {useDispatch} from "react-redux";
+import {setAddress} from "../../../../redux/slices/OrderAddressSlice";
+import {getLabelFromValue} from "../../util/Utils";
+import {useNavigation} from "@react-navigation/native";
 import {
+  returnValueErrorAddressDetail,
+  returnValueErrorDistrict,
   returnValueErrorOfNameCustomer,
   returnValueErrorOfPhoneNumber,
-  returnValueErrorAddressDetail,
   returnValueErrorProvince,
-  returnValueErrorDistrict,
   returnValueErrorWard,
 } from "../../util/CheckValid";
-import { fetchDataMethodGET } from "../../util/CallApi";
+import {fetchDataMethodGET} from "../../util/CallApi";
 
 export default function OrderAddressScreen() {
-  const dispatch = useDispatch();
+const dispatch = useDispatch();
   const navigation = useNavigation();
 
   const [name_customer, setNameCustomer] = useState("");
@@ -116,7 +107,9 @@ export default function OrderAddressScreen() {
       style={{ flex: 1 }}
     >
       <View style={styles.container}>
-        <View style={styles.content}>
+
+
+      <View style={styles.content}>
           {/*<View style={styles.label_name_customer}>*/}
           {/*    <Text>{name_customer}</Text>*/}
           {/*    <Text>{phone_number}</Text>*/}
@@ -129,7 +122,8 @@ export default function OrderAddressScreen() {
           {/*    <Text>{ward_name}</Text>*/}
           {/*</View>*/}
 
-          <MainComponent
+        <MainComponent
+          
             setNameCustomer={setNameCustomer}
             setPhoneNumber={setPhoneNumber}
             setAddressDetail={setAddressDetail}
@@ -160,10 +154,13 @@ export default function OrderAddressScreen() {
             setErrorProvince={setErrorProvince}
             setErrorDistrict={setErrorDistrict}
             setErrorWard={setErrorWard}
+            
           />
-        </View>
-        <Footer handleClickBtConfirm={handleClickBtConfirm} />
       </View>
+        <Footer handleClickBtConfirm={handleClickBtConfirm} />
+
+      </View>
+      
     </KeyboardAvoidingView>
   );
 }
@@ -288,7 +285,9 @@ function MainComponent({
   }, [district_id]);
 
   return (
+
     <View style={styles.mainContent}>
+
       {/*<View style={{marginBottom: 10}}>*/}
       {/*    <Text style={{fontSize: 16}}>Nhập địa chỉ mới</Text>*/}
       {/*</View>*/}
@@ -307,7 +306,7 @@ function MainComponent({
         <Text style={styles.fontSizeText}>Tỉnh/ Thành phố</Text>
       </View>
       <View>
-        <DropDownPicker
+        <DropDownPicker   nestedScrollEnabled={false} 
           placeholder="Chọn Tỉnh/Thành Phố"
           open={isOpenDropDownProvince}
           setOpen={(value) => {
@@ -397,6 +396,7 @@ function MainComponent({
       {errorAddressDetail && (
         <Text style={{ color: "red" }}>{errorAddressDetail}</Text>
       )}
+
     </View>
   );
 }

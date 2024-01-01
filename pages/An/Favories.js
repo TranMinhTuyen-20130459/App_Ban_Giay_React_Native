@@ -1,16 +1,11 @@
-import { useNavigation } from '@react-navigation/native';
-import React, { useEffect } from 'react';
+import {useNavigation} from '@react-navigation/native';
+import React from 'react';
 
-import { View, Text, FlatList, Image, ScrollView, ProgressBarAndroid, TouchableOpacity, StyleSheet, } from 'react-native';
+import {Dimensions, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View,} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { colors } from '../../theme';
-import { Dimensions } from 'react-native';
-import { Button } from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
+import {removeFavories} from '../../redux/slices/Favories';
 
-import { useState } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useDispatch, useSelector } from 'react-redux';
-import { removeFavories } from '../../redux/slices/Favories';
 const FavoriesViewProduct = () => {
     const dispatch = useDispatch();
     const favories = useSelector((state) => state.favories)
