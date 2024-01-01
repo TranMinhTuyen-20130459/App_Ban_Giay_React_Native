@@ -6,9 +6,9 @@ import paymentReducer from './slices/PaymentSlice'
 import orderProductReducer from "./slices/OrderProductSlice";
 import HistoryView from "./slices/HistoryView";
 import Favories from "./slices/Favories";
-import MapSlide from "./slices/MapSlide";
 
 const store = configureStore({
+
     reducer: {
         carts: cartsReducer,
         historys: HistoryView,
@@ -16,10 +16,8 @@ const store = configureStore({
         category: CategoryReducer,
         payment: paymentReducer,
         orderProducts: orderProductReducer,
-        favories: Favories,
-        map: MapSlide, // Thêm reducer mới
+        favories: Favories
     },
-
 
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

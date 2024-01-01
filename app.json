@@ -6,7 +6,6 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
-    "accessRights": "INTERNET",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -29,18 +28,6 @@
           "apiKey": "AIzaSyCmppXAtr_MzNx_sCbDwK9fARePuf7N6qs"
         }
       }
-    },
-    "permissions": [
-      "android.permission.RECORD_AUDIO",
-      "android.permission.MODIFY_AUDIO_SETTINGS"
-    ]
-  },
-  "web": {
-    "favicon": "./assets/favicon.png"
-  },
-  "extra": {
-    "eas": {
-      "projectId": "e9de4f79-ab83-422c-b6ec-b0e542c09f50"
     }
   }
 }
