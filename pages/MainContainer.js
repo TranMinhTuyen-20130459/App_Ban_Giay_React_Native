@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {useState} from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -16,6 +17,9 @@ const accountName = "Tài khoản";
 const Tab = createBottomTabNavigator();
 
 function MainContainer() {
+
+    const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+
     return (
         <Tab.Navigator
             initialRouteName={homeName}
@@ -31,7 +35,7 @@ function MainContainer() {
                         iconName = focused ? 'grid' : 'grid-outline';
 
                     } else if (rn === chatBotName) {
-                        iconName = focused ? 'bug' : 'bug-outline';
+                        iconName = focused ? 'logo-reddit' : 'logo-reddit';
 
                     } else if (rn === accountName) {
                         iconName = focused ? 'person' : 'person-outline';
@@ -44,13 +48,14 @@ function MainContainer() {
                     fontSize: 10,
                 },
                 tabBarStyle: {
-                    padding: 4
+                    padding: 4,
+                    height: isKeyboardVisible ? 0 : 50, // Nếu bàn phím xuất hiện thì ẩn Tab Bar
                 }
             })}
         >
             <Tab.Screen name={homeName} component={HomeScreen}/>
             <Tab.Screen name={categoryName} component={CategoryScreen}/>
-            <Tab.Screen name={chatBotName} component={ChatBotScreen}/>
+            <Tab.Screen name={chatBotName} component={ChatBotScreen} initialParams={{setKeyboardVisible}}/>
             <Tab.Screen name={accountName} component={AccountScreen}/>
         </Tab.Navigator>
     );

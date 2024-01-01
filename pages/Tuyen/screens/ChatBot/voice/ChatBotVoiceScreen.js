@@ -38,7 +38,7 @@ const ChatBotVoiceScreen = () => {
         setRecording(true);
         await Tts.stop();
         try {
-             await Voice.start('en-US');
+            await Voice.start('en-US');
         } catch (error) {
             console.log('error', error);
         }
