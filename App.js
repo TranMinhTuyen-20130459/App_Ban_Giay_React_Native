@@ -20,7 +20,7 @@ import {
 import {addCart} from "./redux/slices/CartsSlice";
 import OrderConfirmScreen from "./pages/Tuyen/screens/OrderConfirm/OrderConfirmScreen";
 import MainContainer from "./pages/MainContainer";
-import OrderAddressScreen from "./pages/Tuyen/screens/OrderAddress/OrderAddressScreen";
+import OrderAddressScreen from "./pages/Tham/OrderAddress/OrderAddressScreen";
 import {ProducDetail} from "./pages/An/ProductDetail";
 import {SelectSize} from "./pages/An/SelectSize";
 import ProductReview from "./pages/An/ProductReview";
@@ -38,7 +38,7 @@ import OTPScreen from "./pages/Kien/OTP";
 import {addFavories} from "./redux/slices/Favories";
 import FavoriesViewProduct from "./pages/An/Favories";
 
-import GoogleMapsScreen from "./pages/Tuyen/screens/OrderAddress/GoogleMapsScreen";
+import GoogleMapsScreen from "./pages/Tham/OrderAddress/GoogleMapsScreen";
 
 function App() {
     const Stack = createNativeStackNavigator();
@@ -264,7 +264,7 @@ function App() {
 
                     <Stack.Screen name="favories" component={FavoriesViewProduct}
                                   options={{
-                                      title: 'Danh sách sản phẩm yêu thích',
+                                      title: 'Sản phẩm yêu thích',
                                       headerTitleAlign: 'center',
                                       headerStyle: {
                                           backgroundColor: colors.blueRoot,

@@ -3,8 +3,8 @@ import DropDownPicker from "react-native-dropdown-picker";
 import {styles} from "./OrderAddress.styles";
 import {useEffect, useState} from "react";
 import {useDispatch} from "react-redux";
-import {setAddress} from "../../../../redux/slices/OrderAddressSlice";
-import {getLabelFromValue} from "../../util/Utils";
+import {setAddress} from "../../../redux/slices/OrderAddressSlice";
+import {getLabelFromValue} from "../../Tuyen/util/Utils";
 import {useNavigation} from "@react-navigation/native";
 import {
     returnValueErrorAddressDetail,
@@ -13,9 +13,9 @@ import {
     returnValueErrorOfPhoneNumber,
     returnValueErrorProvince,
     returnValueErrorWard,
-} from "../../util/CheckValid";
-import {fetchDataMethodGET} from "../../util/CallApi";
-import {colors} from "../../../../theme";
+} from "../../Tuyen/util/CheckValid";
+import {fetchDataMethodGET} from "../../Tuyen/util/CallApi";
+import {colors} from "../../../theme";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 export default function OrderAddressScreen() {
