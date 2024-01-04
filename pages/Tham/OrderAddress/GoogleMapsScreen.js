@@ -9,10 +9,10 @@ import {
     TouchableOpacity,
     View
 } from 'react-native';
-import {colors} from '../../../../theme';
+import {colors} from '../../../theme';
 import {MapComponent} from './MapComponent';
 import {useDispatch, useSelector} from 'react-redux';
-import {setAddress} from '../../../../redux/slices/OrderAddressSlice';
+import {setAddress} from '../../../redux/slices/OrderAddressSlice';
 import {useNavigation} from '@react-navigation/native';
 import {
     returnValueErrorAddressDetail,
@@ -21,7 +21,7 @@ import {
     returnValueErrorOfPhoneNumber,
     returnValueErrorProvince,
     returnValueErrorWard
-} from "../../util/CheckValid";
+} from "../../Tuyen/util/CheckValid";
 
 const GoogleMapsScreen = () => {
 

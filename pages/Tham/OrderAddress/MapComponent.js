@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
-import {parseAddress} from "../../util/Utils";
+import {parseAddress} from "../../Tuyen/util/Utils";
 import * as Location from 'expo-location';
 
 export const MapComponent = ({onUpdateAddress}) => {

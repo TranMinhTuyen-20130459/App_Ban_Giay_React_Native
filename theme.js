@@ -1,5 +1,5 @@
 // constants.js
-export const colors = {
+export const  colors = {
   blueRoot: "#0b83e5",
   orange: "#ffb700",
   green: "#2dc26e",
