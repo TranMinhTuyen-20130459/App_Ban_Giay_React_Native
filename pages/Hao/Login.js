@@ -1,23 +1,8 @@
-import { height } from "deprecated-react-native-prop-types/DeprecatedImagePropType";
-import React, { Conponent } from "react";
-import { useState } from "react";
-import { useRef } from "react";
-// import { GoogleSignin } from '@react-native-google-signin/google-signin';
-
-import {
-  Text,
-  SafeAreaView,
-  View,
-  Image,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-  Dimensions,
-  Button,
-} from "react-native";
+import React, {useState} from "react";
+import {Dimensions, Image, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View,} from "react-native";
 
 
-export default Login = ({ navigation }) => {
+export default function Login  ({ navigation })  {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isEmailValid, setIsEmailValid] = useState(true);
@@ -115,7 +100,7 @@ export default Login = ({ navigation }) => {
               <Text style={styles.errorText}>Vui lòng nhập mật khẩu</Text>
             )}
           </View>
-        
+
           <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
             <Text style={styles.loginButtonText}>Đăng Nhập</Text>
           </TouchableOpacity>

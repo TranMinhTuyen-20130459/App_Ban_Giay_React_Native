@@ -39,6 +39,8 @@ import {addFavories} from "./redux/slices/Favories";
 import FavoriesViewProduct from "./pages/An/Favories";
 
 import GoogleMapsScreen from "./pages/Tham/OrderAddress/GoogleMapsScreen";
+import Register from "./pages/Hao/Register";
+import Login from "./pages/Hao/Login";
 
 function App() {
     const Stack = createNativeStackNavigator();
@@ -271,6 +273,32 @@ function App() {
                                       },
                                       headerTintColor: 'white',
                                   }}/>
+
+                    <Stack.Screen
+                        name="Login"
+                        component={Login}
+                        options={{
+                            title: "Đăng nhập",
+                            headerTitleAlign: "center",
+                            headerStyle: {
+                                backgroundColor: colors.blueRoot,
+                            },
+                            headerTintColor: "white",
+                        }}
+                    />
+
+                    <Stack.Screen
+                        name="Register"
+                        component={Register}
+                        options={{
+                            title: "Đăng ký",
+                            headerTitleAlign: "center",
+                            headerStyle: {
+                                backgroundColor: colors.blueRoot,
+                            },
+                            headerTintColor: "white",
+                        }}
+                    />
                 </Stack.Navigator>
             </NavigationContainer>
         </Provider>
