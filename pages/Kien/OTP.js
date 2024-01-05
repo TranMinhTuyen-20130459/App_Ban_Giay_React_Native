@@ -197,8 +197,6 @@ const styles = StyleSheet.create({
   bottomView: {
     flexDirection: 'row',
     flex: 1,
-    marginBottom: 50,
-    alignItems: 'flex-end'
   },
   btnChangeNumber: {
     width: 150,

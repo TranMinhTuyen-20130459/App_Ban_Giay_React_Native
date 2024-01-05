@@ -129,7 +129,7 @@ const CategoryScreen = () => {
                 </View>
                 <TouchableOpacity>
                     <CartIcon sizeIcon={26}
-                              colorIcon={colors.blueRoot}
+                              colorIcon={colors.white}
                               activeBGColor={true}
                               bGQuantity={colors.bgButtonRed}
                               colorQuantity="#fff"/>
@@ -213,7 +213,7 @@ const styles = StyleSheet.create({
     },
     leftView: {
         flex: 0.5,
-        backgroundColor: 'lightblue',
+        backgroundColor: colors.orange,
         alignItems: 'center',
     },
     rightView: {
