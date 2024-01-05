@@ -1,7 +1,6 @@
-
 import React from "react";
 import {Dimensions, StatusBar} from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import {useNavigation} from "@react-navigation/native";
 import {
     View,
     Text,
@@ -11,19 +10,20 @@ import {
     Image,
 } from "react-native";
 import CartIcon from "../CartIcon";
-import { colors } from '../../theme';
+import {colors} from '../../theme';
 
 export default function Header() {
     const navigation = useNavigation();
+
     return (
         <View style={styles.header}>
             <View style={styles.logoContainer}>
                 <Image
-                    source={{ uri: 'https://salt.tikicdn.com/ts/upload/0e/07/78/ee828743c9afa9792cf20d75995e134e.png' }}
+                    source={require('../../assets/logo.png')}
                     style={styles.logo}
                 />
                 <View style={styles.divideStyle}></View>
-                <Text style={styles.logoBrand}>Tốt & Nhanh</Text>
+                <Text style={styles.logoBrand}>KING AND QUEEN</Text>
             </View>
             <View style={styles.headerInfo}>
                 <TouchableOpacity style={styles.searchInput} onPress={() => navigation.navigate('Search')}>
@@ -72,8 +72,9 @@ const styles = StyleSheet.create({
     logo: {
         maxWidth: "100%",
         borderWidth: 0, // Tương đương với border-style: none;
-        width: 47,
-        height: 20,
+        width: 40,
+        height: 35,
+
     },
     divideStyle: {
         width: 1,
@@ -83,7 +84,7 @@ const styles = StyleSheet.create({
     logoBrand: {
         flex: 1,
         overflow: "hidden",
-        color: "#003ea1", // Tương đương với var(--global-ultramarine-90,#003ea1)
+        color: colors.blueRoot, // Tương đương với var(--global-ultramarine-90,#003ea1)
         // textOverflow: 'ellipsis',
         fontSize: 14,
         fontStyle: "normal",
@@ -128,8 +129,8 @@ const styles = StyleSheet.create({
         padding: 0,
         fontWeight: "400", // Tương đương với font-weight: 400;
         fontSize: 14,
-        color:'#AAAAAA'
-        
+        color: '#AAAAAA'
+
     },
     cart: {
         position: "relative",

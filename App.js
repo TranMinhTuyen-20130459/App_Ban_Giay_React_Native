@@ -27,7 +27,7 @@ import ProductReview from "./pages/An/ProductReview";
 import {getMethodPaymentFromAsyncStorage, setSelectedPayment} from "./redux/slices/PaymentSlice";
 import {getInfoAddressFromAsyncStorage, setAddress,} from "./redux/slices/OrderAddressSlice";
 import OrderDetailsScreen from './pages/Kien/DetailOrder';
-import Search from "./components/Search";
+import Search from "./pages/An/Search";
 import ResultSearch from "./components/ResultSearch";
 import HistorySell from "./pages/Kien/history";
 import HistoryViewProduct from "./pages/Kien/HistoryViewProduct";

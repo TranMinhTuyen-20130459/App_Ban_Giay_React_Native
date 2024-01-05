@@ -17,6 +17,7 @@ import {
 import {fetchDataMethodGET} from "../../Tuyen/util/CallApi";
 import {colors} from "../../../theme";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 export default function OrderAddressScreen() {
     const dispatch = useDispatch();
@@ -115,7 +116,7 @@ export default function OrderAddressScreen() {
             headerTintColor: 'white',
             headerRight: () => (
                 <TouchableOpacity onPress={() => navigation.navigate('GoogleMap')}>
-                    <Ionicons name="md-map" size={30} color="white"/>
+                    <FontAwesome name="map-marker" size={32} color="white" />
                 </TouchableOpacity>
             ),
         });

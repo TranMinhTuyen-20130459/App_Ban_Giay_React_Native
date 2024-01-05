@@ -1,25 +1,12 @@
-    import { useNavigation } from '@react-navigation/native';
-    import React, { useState, useEffect } from 'react';
-    import Ionicons from 'react-native-vector-icons/Ionicons';
-    import NetInfo from '@react-native-community/netinfo';
-    import Voice from '@react-native-voice/voice'
-    import { Audio } from 'expo-av';
-    import * as Speech from 'expo-speech';
-    import {
-        View,
-        Text,
-        Image,
-        TextInput,
-        ScrollView,
-        ProgressBarAndroid,
-        TouchableOpacity,
-        StyleSheet,
-        Dimensions,
-        FlatList
-    } from 'react-native';
-    import { API_GET_PATHS } from "../common/PathApi";
+import {useNavigation} from '@react-navigation/native';
+import React, {useEffect, useState} from 'react';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import NetInfo from '@react-native-community/netinfo';
+import {Audio} from 'expo-av';
+import {Dimensions, Image, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import {API_GET_PATHS} from "../../common/PathApi";
 
-    const Search = () => {
+const Search = () => {
         const navigation = useNavigation();
         const [searchQuery, setSearchQuery] = useState('');
         const [data, setData] = useState([]);
@@ -180,7 +167,7 @@
 
                 <View style={styles.suggest1}>
                     <Text>Coupon Đến 150K</Text>
-                    <Text style={styles.sale}>{isVoice ? 'stop' : 'star'}HÀNG HIỆU SALE 50%</Text>
+                    <Text style={styles.sale}>HÀNG HIỆU SALE 50%</Text>
                 </View>
                 <View style={styles.comp}>
                     <View style={styles.trending}>
@@ -190,21 +177,21 @@
                     <View style={styles.list_tren}>
                         <View style={styles.item_tren}>
                             <Image style={styles.item_tren_image}
-                                source={{ uri: 'https://salt.tikicdn.com/ts/upload/0e/07/78/ee828743c9afa9792cf20d75995e134e.png' }}
+                                   source={require('../../assets/logo.png')}
                             ></Image>
-                            <Text style={styles.item_tren_text}>Colagen</Text>
+                            <Text style={styles.item_tren_text}>Nike Air Max</Text>
                         </View>
                         <View style={styles.item_tren}>
                             <Image style={styles.item_tren_image}
-                                source={{ uri: 'https://salt.tikicdn.com/ts/upload/0e/07/78/ee828743c9afa9792cf20d75995e134e.png' }}
+                                   source={require('../../assets/logo.png')}
                             ></Image>
-                            <Text style={styles.item_tren_text}>Colagen</Text>
+                            <Text style={styles.item_tren_text}>Adidas 98</Text>
                         </View>
                         <View style={styles.item_tren}>
                             <Image style={styles.item_tren_image}
-                                source={{ uri: 'https://salt.tikicdn.com/ts/upload/0e/07/78/ee828743c9afa9792cf20d75995e134e.png' }}
+                                   source={require('../../assets/logo.png')}
                             ></Image>
-                            <Text style={styles.item_tren_text}>Colagen</Text>
+                            <Text style={styles.item_tren_text}>Jordan 9081</Text>
                         </View>
                     </View>
                 </View>
@@ -213,34 +200,29 @@
                     <View style={styles.list_catogary}>
                         <View style={styles.item_catogary}>
                             <Image style={styles.image_catogary}
-                                source={{ uri: 'https://salt.tikicdn.com/ts/upload/0e/07/78/ee828743c9afa9792cf20d75995e134e.png' }}
+                                   source={require('../../assets/logo.png')}
                             ></Image>
-                            <Text style={styles.name_catogary}>Giày nike</Text>
+                            <Text style={styles.name_catogary}>Giày Nike</Text>
                         </View>
                         <View style={styles.item_catogary}>
                             <Image style={styles.image_catogary}
-                                source={{ uri: 'https://salt.tikicdn.com/ts/upload/0e/07/78/ee828743c9afa9792cf20d75995e134e.png' }}
+                                   source={require('../../assets/logo.png')}
                             ></Image>
-                            <Text style={styles.name_catogary}>Giày nike</Text>
+                            <Text style={styles.name_catogary}>Giày Jordan</Text>
                         </View>
                         <View style={styles.item_catogary}>
                             <Image style={styles.image_catogary}
-                                source={{ uri: 'https://salt.tikicdn.com/ts/upload/0e/07/78/ee828743c9afa9792cf20d75995e134e.png' }}
+                                   source={require('../../assets/logo.png')}
                             ></Image>
-                            <Text style={styles.name_catogary}>Giày nike</Text>
+                            <Text style={styles.name_catogary}>Giày Adidas</Text>
                         </View>
                         <View style={styles.item_catogary}>
                             <Image style={styles.image_catogary}
-                                source={{ uri: 'https://salt.tikicdn.com/ts/upload/0e/07/78/ee828743c9afa9792cf20d75995e134e.png' }}
+                                   source={require('../../assets/logo.png')}
                             ></Image>
-                            <Text style={styles.name_catogary}>Giày nike</Text>
+                            <Text style={styles.name_catogary}>Giày Jordan 1</Text>
                         </View>
-                        <View style={styles.item_catogary}>
-                            <Image style={styles.image_catogary}
-                                source={{ uri: 'https://salt.tikicdn.com/ts/upload/0e/07/78/ee828743c9afa9792cf20d75995e134e.png' }}
-                            ></Image>
-                            <Text style={styles.name_catogary}>Giày nike</Text>
-                        </View>
+
                     </View>
                 </View>
             </View>
