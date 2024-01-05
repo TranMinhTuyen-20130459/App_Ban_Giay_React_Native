@@ -2,7 +2,6 @@ import { height } from "deprecated-react-native-prop-types/DeprecatedImagePropTy
 import React, { Conponent } from "react";
 import { useState } from "react";
 import { useRef } from "react";
-import Recaptcha from "react-native-recaptcha-that-works";
 // import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 import {

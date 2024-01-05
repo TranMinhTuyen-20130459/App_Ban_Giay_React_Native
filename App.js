@@ -45,8 +45,8 @@ import { addFavories } from "./redux/slices/Favories";
 import FavoriesViewProduct from "./pages/An/Favories";
 
 import GoogleMapsScreen from "./pages/Tham/OrderAddress/GoogleMapsScreen";
-import Login from "./pages/Haof/login";
-import Register from "./pages/Haof/register";
+import Login from "./pages/Hao/login";
+import Register from "./pages/Hao/register";
 
 function App() {
   const Stack = createNativeStackNavigator();
