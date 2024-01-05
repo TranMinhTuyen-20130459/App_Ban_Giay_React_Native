@@ -19,7 +19,9 @@ function AccountScreen() {
     }
   }, [isFocused]); // Chạy lại khi giá trị isFocused thay đổi
 
-
+  const navigateToLogin = () => {
+    navigation.navigate("Login");
+  };
   return (
     <View style={{ flex: 1 }}>
       <View style={styles.topBar}>
@@ -51,7 +53,12 @@ function AccountScreen() {
               </TouchableOpacity>
               <View style={styles.containerName}>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Text style={{ fontSize: 18, fontWeight: 600 }}>Tuyên Kun</Text>
+                <Text
+                  style={{ fontSize: 18, fontWeight: 600 }}
+                  onPress={navigateToLogin}
+                >
+                  Đăng nhập
+                </Text>
                   <Ionicons style={{ marginLeft: 4, paddingTop: 3 }} name="chevron-forward-outline" size={18} color="#000" />
                 </View>
                 <TouchableOpacity
