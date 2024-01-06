@@ -147,6 +147,12 @@ export const styles = StyleSheet.create({
         addressDetail: {
             display: 'flex',
             flexDirection: 'column',
+        },
+        loadingContainer: {
+            ...StyleSheet.absoluteFillObject,
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            justifyContent: 'center',
+            alignItems: 'center',
         }
     }
 )
