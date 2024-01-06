@@ -1,13 +1,13 @@
 {
   "expo": {
-    "name": "App_Ban_Hang_User",
+    "name": "Tiki Kun",
     "slug": "App_Ban_Hang_User",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/logo.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/splash.jpeg",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -19,7 +19,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/logo.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.tuyen_kun.App_Ban_Hang_User",
@@ -27,6 +27,11 @@
         "googleMaps": {
           "apiKey": "AIzaSyCmppXAtr_MzNx_sCbDwK9fARePuf7N6qs"
         }
+      }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "d367505e-50d5-4487-9f23-2a6d70d23d07"
       }
     }
   }

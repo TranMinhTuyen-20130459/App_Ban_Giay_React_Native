@@ -213,7 +213,7 @@ const styles = StyleSheet.create({
     },
     leftView: {
         flex: 0.5,
-        backgroundColor: colors.orange,
+        backgroundColor: colors.blueRoot,
         alignItems: 'center',
     },
     rightView: {
