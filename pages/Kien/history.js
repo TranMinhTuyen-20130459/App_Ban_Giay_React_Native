@@ -5,7 +5,7 @@ import {Alert, FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View} fr
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {API_GET_PATHS} from "../../common/PathApi";
 import firebase from 'firebase/compat/app';
-import {FirebaseRecaptchaVerifierModal} from 'expo-firebase-recaptcha';
+// import {FirebaseRecaptchaVerifierModal} from 'expo-firebase-recaptcha';
 import {firebaseConfig} from '../../config';
 
 const HistorySell = () => {
@@ -24,29 +24,29 @@ const HistorySell = () => {
     console.log(checkVerifier)
     const sendVerification = ()=>{
         if(searchQuery.startsWith(0)){
-          setSearchQuery(searchQuery.substring(1))  
+            setSearchQuery(searchQuery.substring(1))
         }
         console.log(searchQuery)
         const phoneProvider = new firebase.auth.PhoneAuthProvider();
         phoneProvider.verifyPhoneNumber("+84"+searchQuery,recaptchaVerifier.current)
-        .then(verificationId => {
-            // Save the verificationId for later use
-            setVerificationId(verificationId);
-            navigation.navigate('otp', {
-                      phone: "+84"+searchQuery,
-                      verification: verificationId, 
+            .then(verificationId => {
+                // Save the verificationId for later use
+                setVerificationId(verificationId);
+                navigation.navigate('otp', {
+                    phone: "+84"+searchQuery,
+                    verification: verificationId,
+                })
             })
-          })
-          .catch(error => {
-            Alert.alert(
-                'Định dạnh không hợp lệ'
-            )
-          });
+            .catch(error => {
+                Alert.alert(
+                    'Định dạnh không hợp lệ'
+                )
+            });
         // .then((setVerificationId) => {
-                  
+
         //     // Navigate to OTP screen with the verified phone number
-           
-        //   })         
+
+        //   })
     }
     const confirmCode = ()=>{
         const credential = firebase.auth.PhoneAuthProvider.credential(
@@ -54,13 +54,13 @@ const HistorySell = () => {
             code
         );
         firebase.auth().signInWithCredential(credential)
-        .then(()=>{
-            setCode("")
+            .then(()=>{
+                setCode("")
 
-        })
-        .catch((err)=>{
-            alert(err)
-        })
+            })
+            .catch((err)=>{
+                alert(err)
+            })
         Alert.alert(
             'Susses'
         )
@@ -71,7 +71,7 @@ const HistorySell = () => {
         if(checkVerifier){
             fetchData(); // Fetch data with default phone number
         }
-     
+
     }, [checkVerifier || phone]);
     // Hàm lấy dữ liệu từ API dựa trên số điện thoại
     const fetchData = async () => {
@@ -149,9 +149,9 @@ const HistorySell = () => {
     return (
 
         <View>
-            <FirebaseRecaptchaVerifierModal 
-            ref={recaptchaVerifier}
-            firebaseConfig={firebaseConfig}
+            <FirebaseRecaptchaVerifierModal
+                ref={recaptchaVerifier}
+                firebaseConfig={firebaseConfig}
             />
             <View style={styles.searchContainer}>
                 <Text>+84</Text>
@@ -225,12 +225,6 @@ const styles = StyleSheet.create({
         color: 'orange',
         fontWeight: 'bold',
         marginTop: 5,
-    },
-    headerContainer: {
-        flexDirection: 'row',
-        marginBottom: 20,
-        justifyContent: 'center',
-        position: 'relative',
     },
     backIcon: {
         position: 'absolute',
@@ -311,16 +305,7 @@ const styles = StyleSheet.create({
         flex: 1,
         height: 40,
         paddingHorizontal: 10,
-    },
-    detailButton: {
-        backgroundColor: 'transparent',
-        padding: 10,
-        borderRadius: 5,
-        flex: 1,
-        marginRight: 5,
-        borderWidth: 1,
-        borderColor: '#3498db',
-    },
+    }
 });
 
 
