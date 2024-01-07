@@ -4,14 +4,16 @@ import Feather from "react-native-vector-icons/Feather";
 import {WebView} from "react-native-webview";
 import axios from 'axios';
 import {encode} from 'base-64';
-import {StatusPaymentsId} from "./OrderConfirmScreen";
+import {StatusPaymentsId} from "../OrderConfirm/OrderConfirmScreen";
 
-export function PayPalWebView(props) {
+export function PayPalWebViewTest(props) {
 
     const {showGateway, setShowGateway, order, orderAmount} = props;
     const [progress, setProgress] = useState(false);
     const [progressClr, setProgressClr] = useState('#000');
     const [paypalUrl, setPaypalUrl] = useState('https://my-pay-web.web.app/');
+    const [orderAmountUSD, setOrderAmountUSD] = useState(0);
+    const exchangeRate = 23000; // Tỷ giá hối đoái: 1 USD = 23,000 VND
 
     useEffect(() => {
         // Hàm chạy khi component được mount để lấy access token và tạo đơn hàng
@@ -57,6 +59,9 @@ export function PayPalWebView(props) {
 
     const createOrder = async (accessToken) => {
         try {
+            // Chuyển đổi giá trị từ VND sang USD
+            const orderAmountUSD = orderAmount / exchangeRate;
+
             const response = await axios.post(
                 'https://api.sandbox.paypal.com/v2/checkout/orders',
                 {
@@ -65,7 +70,7 @@ export function PayPalWebView(props) {
                         {
                             amount: {
                                 currency_code: 'USD',
-                                value: orderAmount.toString(),
+                                value: orderAmountUSD.toString(),
                             },
                         },
                     ],

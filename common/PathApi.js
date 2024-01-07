@@ -1,6 +1,6 @@
-export const BASE_URL = 'https://net-core-web-ban-giay.onrender.com'
+//export const BASE_URL = 'https://net-core-web-ban-giay.onrender.com'
 
-// export const BASE_URL = 'http://tranhao123-001-site1.etempurl.com'
+export const BASE_URL = 'http://tranhao123-001-site1.etempurl.com'
 
 export const API_GET_PATHS = Object.freeze({
     lay_ds_giay_moi: `${BASE_URL}/api/product-shoes/ds-giay-moi?`,
