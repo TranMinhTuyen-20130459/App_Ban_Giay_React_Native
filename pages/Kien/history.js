@@ -14,53 +14,53 @@ const HistorySell = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
     const [checked, setChecked] = useState(false);
-    const[code, setCode] = useState("")
-    const[verificationId ,setVerificationId] = useState(null)
+    const [code, setCode] = useState("")
+    const [verificationId, setVerificationId] = useState(null)
     const recaptchaVerifier = useRef(null)
     const navigation = useNavigation();
     const route = useRoute();
     const {checkVerifier} = route.params || false;
     const {phone} = route.params || '';
     console.log(checkVerifier)
-    const sendVerification = ()=>{
-        if(searchQuery.startsWith(0)){
-          setSearchQuery(searchQuery.substring(1))  
+    const sendVerification = () => {
+        if (searchQuery.startsWith(0)) {
+            setSearchQuery(searchQuery.substring(1))
         }
         console.log(searchQuery)
         const phoneProvider = new firebase.auth.PhoneAuthProvider();
-        phoneProvider.verifyPhoneNumber("+84"+searchQuery,recaptchaVerifier.current)
-        .then(verificationId => {
-            // Save the verificationId for later use
-            setVerificationId(verificationId);
-            navigation.navigate('otp', {
-                      phone: "+84"+searchQuery,
-                      verification: verificationId, 
+        phoneProvider.verifyPhoneNumber("+84" + searchQuery, recaptchaVerifier.current)
+            .then(verificationId => {
+                // Save the verificationId for later use
+                setVerificationId(verificationId);
+                navigation.navigate('otp', {
+                    phone: "+84" + searchQuery,
+                    verification: verificationId,
+                })
             })
-          })
-          .catch(error => {
-            Alert.alert(
-                'Định dạnh không hợp lệ'
-            )
-          });
+            .catch(error => {
+                Alert.alert(
+                    'Định dạnh không hợp lệ'
+                )
+            });
         // .then((setVerificationId) => {
-                  
+
         //     // Navigate to OTP screen with the verified phone number
-           
+
         //   })         
     }
-    const confirmCode = ()=>{
+    const confirmCode = () => {
         const credential = firebase.auth.PhoneAuthProvider.credential(
             verificationId,
             code
         );
         firebase.auth().signInWithCredential(credential)
-        .then(()=>{
-            setCode("")
+            .then(() => {
+                setCode("")
 
-        })
-        .catch((err)=>{
-            alert(err)
-        })
+            })
+            .catch((err) => {
+                alert(err)
+            })
         Alert.alert(
             'Susses'
         )
@@ -68,10 +68,10 @@ const HistorySell = () => {
     // Lấy dữ liệu từ API khi mở ứng dụng
     useEffect(() => {
         console.log(checkVerifier)
-        if(checkVerifier){
+        if (checkVerifier) {
             fetchData(); // Fetch data with default phone number
         }
-     
+
     }, [checkVerifier || phone]);
     // Hàm lấy dữ liệu từ API dựa trên số điện thoại
     const fetchData = async () => {
@@ -117,7 +117,8 @@ const HistorySell = () => {
                         Thời gian: <Text style={styles.purchaseValue}>{item.time_order}</Text>
                     </Text>
                     <Text style={styles.purchaseText}>
-                        Phương thức thanh toán: <Text style={styles.purchaseValue}>{item.payment.name_method_payment}</Text>
+                        Phương thức thanh toán: <Text
+                        style={styles.purchaseValue}>{item.payment.name_method_payment}</Text>
                     </Text>
                     <Text style={[styles.purchaseValue]}>
                         Đã thanh toán : {item.payment.id_status_payment > 2 ? "✔️" : "❌"}
@@ -149,9 +150,9 @@ const HistorySell = () => {
     return (
 
         <View>
-            <FirebaseRecaptchaVerifierModal 
-            ref={recaptchaVerifier}
-            firebaseConfig={firebaseConfig}
+            <FirebaseRecaptchaVerifierModal
+                ref={recaptchaVerifier}
+                firebaseConfig={firebaseConfig}
             />
             <View style={styles.searchContainer}>
                 <Text>+84</Text>
@@ -225,12 +226,6 @@ const styles = StyleSheet.create({
         color: 'orange',
         fontWeight: 'bold',
         marginTop: 5,
-    },
-    headerContainer: {
-        flexDirection: 'row',
-        marginBottom: 20,
-        justifyContent: 'center',
-        position: 'relative',
     },
     backIcon: {
         position: 'absolute',
@@ -311,16 +306,7 @@ const styles = StyleSheet.create({
         flex: 1,
         height: 40,
         paddingHorizontal: 10,
-    },
-    detailButton: {
-        backgroundColor: 'transparent',
-        padding: 10,
-        borderRadius: 5,
-        flex: 1,
-        marginRight: 5,
-        borderWidth: 1,
-        borderColor: '#3498db',
-    },
+    }
 });
 
 
