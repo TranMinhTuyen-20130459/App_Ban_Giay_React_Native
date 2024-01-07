@@ -21,6 +21,7 @@
     "@reduxjs/toolkit": "^1.9.5",
     "@types/react": "~18.2.14",
     "axios": "^1.6.3",
+    "base-64": "^1.0.0",
     "deprecated-react-native-prop-types": "^4.2.1",
     "expo": "^49.0.21",
     "expo-av": "~13.4.1",

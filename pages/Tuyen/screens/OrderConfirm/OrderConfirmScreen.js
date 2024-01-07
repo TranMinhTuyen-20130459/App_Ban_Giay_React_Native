@@ -1,5 +1,5 @@
 import {styles} from "./OrderConfirm.styles";
-import {Alert, Image, ScrollView, Text, TouchableOpacity, View} from "react-native";
+import {ActivityIndicator, Alert, Image, ScrollView, Text, TouchableOpacity, View} from "react-native";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import React, {useState} from "react";
 import {colors} from "../../../../theme";
@@ -30,6 +30,9 @@ export default function OrderConfirmScreen() {
 
     // show ra màn hình thanh toán bằng PayPal
     const [showPayPalGateway, setShowPayPalGateway] = useState(false);
+
+    // chờ đặt hàng
+    const [isLoading, setIsLoading] = useState(false);
 
     const SetShowPayPalGateway = (value) => {
         setShowPayPalGateway(value);
@@ -126,6 +129,8 @@ export default function OrderConfirmScreen() {
     }
     const Order = async (id_status_payment) => {
 
+        setIsLoading(true);
+
         // Cập nhật lại trạng thái thanh toán đơn hàng
         order_data.payment.id_status_payment = id_status_payment;
 
@@ -137,6 +142,8 @@ export default function OrderConfirmScreen() {
 
             // Tạo đơn hàng thành công
             if (response.status === 201) {
+
+                setIsLoading(false);
 
                 Alert.alert('Thông báo', 'Đặt hàng thành công', [{
                     text: 'OK',
@@ -182,6 +189,13 @@ export default function OrderConfirmScreen() {
                 ) : null}
             </ScrollView>
             <FooterComponent handleClickBtOrder={handleClickBtOrder} total_price={total_price}></FooterComponent>
+
+            {/*Màn hình loading khi đặt hàng*/}
+            {isLoading && (
+                <View style={styles.loadingContainer}>
+                    <ActivityIndicator size="large" color={colors.blueRoot}/>
+                </View>
+            )}
         </View>
     );
 }
